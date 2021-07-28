@@ -1,4 +1,5 @@
 import { Trans } from '@lingui/macro';
+import { Input } from 'components/forms';
 import { HeadPage } from 'components/head-page';
 import { Layout } from 'components/layout';
 import { Caption, Subtitle } from 'components/typography';
@@ -15,12 +16,7 @@ const Validate: React.FC = () => {
 				rightComponent={<button>activate</button>}
 			/>
 			<div className="px-5">
-				<input
-					type="text"
-					value={email}
-					onChange={(e) => setEmail(e.target.value)}
-					className="flex items-center mb-3 px-6 w-full h-16 bg-background-input border-none rounded-2xl"
-				/>
+				<Input value={email} onChange={setEmail} />
 				<Subtitle type="2" className="mb-11 text-primary-40">
 					<Trans>Same email you used in Buy Me a Coffee.</Trans>
 				</Subtitle>

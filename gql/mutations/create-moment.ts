@@ -15,6 +15,8 @@ export const CREATE_MOMENT = gql`
 		$videos: _text
 		$note_voices: _text
 		$tags: [moment_tag_insert_input!]! = []
+		$indexes: [moment_index_insert_input!]! = []
+		$processes: [moment_process_insert_input!]! = []
 	) {
 		insert_moments(
 			objects: {
@@ -26,6 +28,8 @@ export const CREATE_MOMENT = gql`
 				videos: $videos
 				note_voices: $note_voices
 				moment_tags: { data: $tags }
+				moment_indexes: { data: $indexes }
+				moment_processes: { data: $processes }
 			}
 		) {
 			returning {

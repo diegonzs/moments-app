@@ -1,0 +1,9 @@
+schema:
+  - https://diego-test.hasura.app/v1/graphql:
+      headers:
+        x-hasura-admin-secret: ${HASURA_ADMIN_KEY}
+
+generates:
+  ./types/schema-types.ts:
+    plugins:
+      - typescript

@@ -20,10 +20,12 @@ import { Trans, t } from '@lingui/macro';
 import {
 	BookmarkIcon,
 	ChevronRightIcon,
+	HashtagIcon,
 	LocationMarkerIcon,
 	MicrophoneIcon,
 	PhotographIcon,
 } from '@heroicons/react/outline';
+import { CreateItem } from 'components/create-item';
 
 type ImageUploadType = {
 	file: File;
@@ -32,27 +34,41 @@ type ImageUploadType = {
 
 const Create = () => {
 	const router = useRouter();
+	const { type } = router.query;
 	const { height } = useWindowSize();
 	const user = useUser();
 	const { handleCreateMoment } = useIsCreatingMoment();
 	const { mutate: mutateMoments } = useMoments();
 	const { tags, mutate: mutateTags } = useTags();
-	const { type } = router.query;
-	const [modalType, setModalType] = React.useState<
-		'cancel' | 'voice' | 'media-preview'
-	>('cancel');
+
 	const { Modal, isShow, hide, show } = useModal();
+
+	const [modalType, setModalType] = React.useState<
+		'cancel' | 'voice' | 'media-preview' | 'process' | 'index'
+	>('cancel');
+
 	const [defaultPreviewIndex, setDefaultPreviewIndex] = React.useState(0);
 	const [isHashtagListShow, setIsHashtagListShow] = React.useState(false);
+
 	const contentRef = React.useRef<HTMLTextAreaElement>(null);
+
 	const [content, setContent] = React.useState<string>('');
-	const [images, setImages] = React.useState<ImageUploadType[]>([]);
-	const [videos, setVideos] = React.useState<ImageUploadType[]>([]);
-	const [audios, setAudios] = React.useState<ImageUploadType[]>([]);
+	const [selectedProcess, setSelectedProcess] = React.useState<{
+		text: string;
+		id: string;
+	} | null>(null);
+	const [selectedIndex, setSelectedIndex] = React.useState<{
+		text: string;
+		id: string;
+	} | null>(null);
 	const [emojiSelected] = React.useState<{
 		key: string;
 		value: string;
 	} | null>(null);
+
+	const [images, setImages] = React.useState<ImageUploadType[]>([]);
+	const [videos, setVideos] = React.useState<ImageUploadType[]>([]);
+	const [audios, setAudios] = React.useState<ImageUploadType[]>([]);
 
 	const tagWord = content.split('#').pop();
 	const isLastWordTag = content.split(' ').pop()?.includes('#');
@@ -297,20 +313,52 @@ const Create = () => {
 				</div>
 
 				<div className="relative flex flex-col">
-					<div className="flex border-t-2 border-b-2 border-primary-10 py-4 w-full">
+					<div
+						className="flex border-t-2 border-b-2 border-primary-10 py-4 w-full cursor-pointer"
+						onClick={() => {
+							setModalType('process');
+							show();
+						}}
+					>
 						<div className="px-5 flex justify-between items-center w-full">
 							<div className="flex items-center">
-								<BookmarkIcon width="16" className="text-secondary mr-3" />
+								{/* <BookmarkIcon width="16" className="text-secondary mr-3" /> */}
 								<Subtitle type="2" className="text-secondary">
-									<Trans>Add to your Index</Trans>
+									{!selectedProcess ? (
+										<Trans>Add to Process</Trans>
+									) : (
+										<Trans>Process</Trans>
+									)}
 								</Subtitle>
 							</div>
-							<ChevronRightIcon width="16" className="text-primary-40" />
+							<div className="flex items-center">
+								{selectedProcess ? (
+									<Subtitle type="3" className="text-primary-60 mr-5">
+										{selectedProcess.text}
+									</Subtitle>
+								) : null}
+								<ChevronRightIcon width="16" className="text-primary-40" />
+							</div>
 						</div>
 					</div>
 
 					<div className="flex justify-between items-center w-full px-5 py-4">
 						<div className="grid grid-flow-col gap-8">
+							<div
+								className="cursor-pointer"
+								onClick={() => {
+									setModalType('index');
+									show();
+								}}
+							>
+								<BookmarkIcon
+									width="18"
+									className={clsx(
+										'text-secondary',
+										selectedIndex ? 'fill-current' : 'stroke-current'
+									)}
+								/>
+							</div>
 							<div>
 								<input
 									type="file"
@@ -340,6 +388,25 @@ const Create = () => {
 								<MicrophoneIcon
 									width="18"
 									className="text-secondary cursor-pointer"
+								/>
+							</div>
+							<div
+								onClick={() => {
+									setContent((prev) => {
+										const lastLetter = prev.charAt(prev.length - 1);
+										if (lastLetter === ' ') {
+											return `${prev}#`;
+										}
+										return `${prev} #`;
+									});
+									setIsHashtagListShow(true);
+									contentRef.current?.focus();
+								}}
+								className="cursor-pointer"
+							>
+								<HashtagIcon
+									width="18"
+									className="fill-current text-secondary"
 								/>
 							</div>
 							<Icon
@@ -415,6 +482,38 @@ const Create = () => {
 						audios={audios.map((e) => e.url)}
 						videos={videos.map((e) => e.url)}
 						defaultIndex={defaultPreviewIndex}
+					/>
+				)}
+				{modalType === 'process' && (
+					<CreateItem
+						title="Add Process"
+						placeholder="Insert a process..."
+						descriptionTitle="Give a purpose to your moments"
+						descriptionBody="A process is used to keep record of your journal to achieve anything great you want in life and make them easy to be found so you can see your progress in your goals."
+						createText="Create new process"
+						activeText="All Active Processes"
+						onClickElem={(value) => {
+							setSelectedProcess(value);
+							hide();
+						}}
+						onClose={hide}
+						data={[{ text: 'nuevo trabajo', id: 'asdasd' }]}
+					/>
+				)}
+				{modalType === 'index' && (
+					<CreateItem
+						title="Add to Index"
+						placeholder="Insert a index..."
+						descriptionTitle="Give a purpose to your moments"
+						descriptionBody="A process is used to keep record of your journal to achieve anything great you want in life and make them easy to be found so you can see your progress in your goals."
+						createText="Create new Index"
+						activeText="All Active Indexes"
+						onClickElem={(value) => {
+							setSelectedIndex(value);
+							hide();
+						}}
+						onClose={hide}
+						data={[{ text: 'Primer viaje a merida', id: 'asdasd' }]}
 					/>
 				)}
 			</Modal>

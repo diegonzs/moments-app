@@ -6,6 +6,7 @@
 		"dev": "next dev",
 		"build": "lingui compile && next build",
 		"start": "next start",
+		"generate-types": "graphql-codegen -r dotenv/config",
 		"add-locale": "lingui add-locale",
 		"extract": "lingui extract",
 		"type-check": "tsc --project tsconfig.json --pretty --noEmit",
@@ -61,6 +62,8 @@
 	},
 	"devDependencies": {
 		"@babel/core": "^7.12.10",
+		"@graphql-codegen/cli": "^1.21.7",
+		"@graphql-codegen/typescript": "^1.23.0",
 		"@lingui/cli": "^3.8.9",
 		"@lingui/loader": "^3.8.9",
 		"@lingui/macro": "^3.8.9",
