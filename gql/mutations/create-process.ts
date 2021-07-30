@@ -1,5 +1,5 @@
 import { gql } from 'graphql-request';
-import { Processes } from 'types/schema-types';
+import { Processes_Mutation_Response } from 'types/schema-types';
 import { fetcherGraph } from 'lib';
 
 export const CREATE_PROCESS = gql`
@@ -18,8 +18,20 @@ interface TCreateProcessInput {
 	title: string;
 }
 
+interface TCreateResponse {
+	insert_processes: Processes_Mutation_Response;
+}
+
 export const createProcess = async ({ token, title }: TCreateProcessInput) => {
-	await fetcherGraph<Processes, { title: string }>(CREATE_PROCESS, token, {
-		title,
-	});
+	const data = await fetcherGraph<TCreateResponse, { title: string }>(
+		CREATE_PROCESS,
+		token,
+		{
+			title,
+		}
+	);
+	return {
+		id: data.insert_processes.returning[0].id,
+		title: data.insert_processes.returning[0].title,
+	};
 };

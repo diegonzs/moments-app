@@ -5,7 +5,7 @@ export const GET_ALL_INDEXES = gql`
 		indexes {
 			id
 			title
-			moment_indexes_aggregate {
+			moments_aggregate {
 				aggregate {
 					count
 				}

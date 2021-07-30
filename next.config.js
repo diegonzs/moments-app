@@ -16,10 +16,11 @@ module.exports = withPWA({
 	sassOptions: {
 		includePaths: [path.join(__dirname, 'styles')],
 	},
-	webpack: (config) => {
+	webpack: (config, options) => {
 		config.module.rules.push({
 			test: /\.po/,
 			use: [
+				options.defaultLoaders.babel,
 				{
 					loader: '@lingui/loader',
 				},

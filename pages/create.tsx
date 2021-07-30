@@ -11,17 +11,21 @@ import { Alert } from 'components/alert';
 import { FullMedia } from 'components/full-media';
 import { VoiceRecorder } from 'components/voice-recorder';
 import { MediaBox } from 'components/create-moment/media-box';
-import { createSRWMoment, createTag } from 'gql/mutations';
+import {
+	createIndex,
+	createProcess,
+	createSRWMoment,
+	createTag,
+} from 'gql/mutations';
 import { useUser } from 'hooks/user/useUser';
 import { GetServerSideProps } from 'next';
-import { useMoments, useTags } from 'hooks/api';
+import { useIndexes, useMoments, useProcesses, useTags } from 'hooks/api';
 import { useIsCreatingMoment } from 'hooks';
 import { Trans, t } from '@lingui/macro';
 import {
 	BookmarkIcon,
 	ChevronRightIcon,
 	HashtagIcon,
-	LocationMarkerIcon,
 	MicrophoneIcon,
 	PhotographIcon,
 } from '@heroicons/react/outline';
@@ -40,6 +44,8 @@ const Create = () => {
 	const { handleCreateMoment } = useIsCreatingMoment();
 	const { mutate: mutateMoments } = useMoments();
 	const { tags, mutate: mutateTags } = useTags();
+	const { processes, mutate: mutateProcess } = useProcesses();
+	const { indexes, mutate: mutateIndexes } = useIndexes();
 
 	const { Modal, isShow, hide, show } = useModal();
 
@@ -54,11 +60,11 @@ const Create = () => {
 
 	const [content, setContent] = React.useState<string>('');
 	const [selectedProcess, setSelectedProcess] = React.useState<{
-		text: string;
+		title: string;
 		id: string;
 	} | null>(null);
 	const [selectedIndex, setSelectedIndex] = React.useState<{
-		text: string;
+		title: string;
 		id: string;
 	} | null>(null);
 	const [emojiSelected] = React.useState<{
@@ -140,6 +146,58 @@ const Create = () => {
 		}
 	};
 
+	const saveProcess = async (value: string) => {
+		if (value) {
+			const formattedValue = value.toLowerCase().trim();
+			const savingProcess = {
+				id: '',
+				title: '',
+			};
+			const inProcesses = processes?.find(
+				(elem) => elem.title.toLowerCase() === formattedValue
+			);
+			if (!inProcesses) {
+				const newProcess = await createProcess({
+					token: user?.token || '',
+					title: formattedValue,
+				});
+				savingProcess.id = newProcess.id;
+				savingProcess.title = newProcess.title;
+				mutateProcess();
+			} else {
+				savingProcess.id = inProcesses.id;
+				savingProcess.title = inProcesses.title;
+			}
+			setSelectedProcess(savingProcess);
+		}
+	};
+
+	const saveIndex = async (value: string) => {
+		if (value) {
+			const formattedValue = value.toLowerCase().trim();
+			const savingIndex = {
+				id: '',
+				title: '',
+			};
+			const inIndexes = indexes?.find(
+				(elem) => elem.title.toLowerCase() === formattedValue
+			);
+			if (!inIndexes) {
+				const newProcess = await createIndex({
+					token: user?.token || '',
+					title: formattedValue,
+				});
+				savingIndex.id = newProcess.id;
+				savingIndex.title = newProcess.title;
+				mutateIndexes();
+			} else {
+				savingIndex.id = inIndexes.id;
+				savingIndex.title = inIndexes.title;
+			}
+			setSelectedIndex(savingIndex);
+		}
+	};
+
 	const removeFile = (index: number, fileType: string) => {
 		if (fileType.includes('image')) {
 			const newImages = [...images.slice(0, index), ...images.slice(index + 1)];
@@ -193,6 +251,8 @@ const Create = () => {
 				images: '',
 				videos: '',
 				note_voices: '',
+				processId: selectedProcess?.id || null,
+				indexId: selectedIndex?.id || null,
 			};
 
 			mutateMoments((data) => {
@@ -238,7 +298,7 @@ const Create = () => {
 					minHeight: !height ? '100vh' : `${height}px`,
 				}}
 			>
-				<div className="flex items-center px-5 justify-between mb-8">
+				<div className="flex items-center px-5 justify-between mb-6">
 					<div
 						className="flex items-center cursor-pointer"
 						onClick={() => {
@@ -266,17 +326,18 @@ const Create = () => {
 					</button>
 				</div>
 
-				<div className="px-5">
+				<div></div>
+				{/* <div className="px-5">
 					<Subtitle type="2" className="text-secondary flex cursor-pointer">
 						<LocationMarkerIcon width="14" className="text-secondary mr-4" />
 						<Trans>Add Location</Trans>
 					</Subtitle>
-				</div>
+				</div> */}
 
 				<ul
 					className={clsx(
-						'flex gap-3 px-5 mb-4',
-						!!allMediaFiles.length && 'mt-7'
+						'flex gap-3 px-5',
+						!!allMediaFiles.length && 'mt-3 mb-4'
 					)}
 				>
 					{allMediaFiles.map((file, index) => (
@@ -334,7 +395,7 @@ const Create = () => {
 							<div className="flex items-center">
 								{selectedProcess ? (
 									<Subtitle type="3" className="text-primary-60 mr-5">
-										{selectedProcess.text}
+										{selectedProcess.title}
 									</Subtitle>
 								) : null}
 								<ChevronRightIcon width="16" className="text-primary-40" />
@@ -492,12 +553,16 @@ const Create = () => {
 						descriptionBody="A process is used to keep record of your journal to achieve anything great you want in life and make them easy to be found so you can see your progress in your goals."
 						createText="Create new process"
 						activeText="All Active Processes"
+						onCreateNewOne={async (value) => {
+							saveProcess(value);
+							hide();
+						}}
 						onClickElem={(value) => {
 							setSelectedProcess(value);
 							hide();
 						}}
 						onClose={hide}
-						data={[{ text: 'nuevo trabajo', id: 'asdasd' }]}
+						data={processes || []}
 					/>
 				)}
 				{modalType === 'index' && (
@@ -512,8 +577,12 @@ const Create = () => {
 							setSelectedIndex(value);
 							hide();
 						}}
+						onCreateNewOne={async (value) => {
+							saveIndex(value);
+							hide();
+						}}
 						onClose={hide}
-						data={[{ text: 'Primer viaje a merida', id: 'asdasd' }]}
+						data={indexes || []}
 					/>
 				)}
 			</Modal>

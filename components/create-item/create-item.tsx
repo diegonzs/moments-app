@@ -6,26 +6,28 @@ import * as React from 'react';
 
 interface CreateItemProps {
 	title: string;
-	onClickElem: (value: { id: string; text: string }) => void;
+	onClickElem: (value: { id: string; title: string }) => void;
 	onClose: () => void;
 	placeholder?: string;
 	descriptionTitle: string;
 	descriptionBody: string;
 	createText: string;
 	activeText: string;
-	data: { id: string; text: string }[];
+	data: { id: string; title: string }[];
+	onCreateNewOne: (value: string) => void;
 }
 
 export const CreateItem: React.FC<CreateItemProps> = ({
 	title,
-	onClose,
 	placeholder,
 	descriptionTitle,
 	descriptionBody,
 	createText,
 	activeText,
-	onClickElem,
 	data,
+	onClose,
+	onClickElem,
+	onCreateNewOne,
 }) => {
 	const [value, setValue] = React.useState('');
 	return (
@@ -59,15 +61,15 @@ export const CreateItem: React.FC<CreateItemProps> = ({
 					</Subtitle>
 					<ul className="grid gap-4">
 						{data
-							.filter((e) => e.text.includes(value))
+							.filter((e) => e.title.includes(value))
 							.map((elem) => (
 								<li
 									key={elem.id}
 									className="cursor-pointer"
 									onClick={() => onClickElem(elem)}
 								>
-									<BodyText type="1" className="text-primary">
-										{elem.text}
+									<BodyText type="1" className="text-primary text-left">
+										{elem.title}
 									</BodyText>
 								</li>
 							))}
@@ -75,15 +77,17 @@ export const CreateItem: React.FC<CreateItemProps> = ({
 				</div>
 			)}
 			{!!value && (
-				<Subtitle
-					type="1"
-					className={clsx(
-						'text-secondary cursor-pointer mt-4',
-						!!data.length && 'text-left'
-					)}
-				>
-					{`${createText} "${value}"`}
-				</Subtitle>
+				<div onClick={() => onCreateNewOne(value)}>
+					<Subtitle
+						type="1"
+						className={clsx(
+							'text-secondary cursor-pointer mt-4',
+							!!data.length && 'text-left'
+						)}
+					>
+						{`${createText} "${value}"`}
+					</Subtitle>
+				</div>
 			)}
 		</div>
 	);

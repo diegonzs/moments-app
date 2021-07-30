@@ -15,8 +15,8 @@ export const CREATE_MOMENT = gql`
 		$videos: _text
 		$note_voices: _text
 		$tags: [moment_tag_insert_input!]! = []
-		$indexes: [moment_index_insert_input!]! = []
-		$processes: [moment_process_insert_input!]! = []
+		$indexId: uuid
+		$processId: uuid
 	) {
 		insert_moments(
 			objects: {
@@ -28,8 +28,8 @@ export const CREATE_MOMENT = gql`
 				videos: $videos
 				note_voices: $note_voices
 				moment_tags: { data: $tags }
-				moment_indexes: { data: $indexes }
-				moment_processes: { data: $processes }
+				index_id: $indexId
+				process_id: $processId
 			}
 		) {
 			returning {
@@ -49,6 +49,8 @@ export interface CreateMomentVariables {
 	images: string | null;
 	videos: string | null;
 	note_voices: string | null;
+	processId: string | null;
+	indexId: string | null;
 }
 
 interface CreateMomentInterface {

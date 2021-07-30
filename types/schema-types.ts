@@ -69,30 +69,30 @@ export type Indexes = {
 	created_at: Scalars['timestamptz'];
 	id: Scalars['uuid'];
 	/** An array relationship */
-	moment_indexes: Array<Moment_Index>;
+	moments: Array<Moments>;
 	/** An aggregated array relationship */
-	moment_indexes_aggregate: Moment_Index_Aggregate;
+	moments_aggregate: Moments_Aggregate;
 	title: Scalars['String'];
 	updated_at: Scalars['timestamptz'];
 	user_id: Scalars['String'];
 };
 
 /** columns and relationships of "indexes" */
-export type IndexesMoment_IndexesArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
+export type IndexesMomentsArgs = {
+	distinct_on?: Maybe<Array<Moments_Select_Column>>;
 	limit?: Maybe<Scalars['Int']>;
 	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
+	order_by?: Maybe<Array<Moments_Order_By>>;
+	where?: Maybe<Moments_Bool_Exp>;
 };
 
 /** columns and relationships of "indexes" */
-export type IndexesMoment_Indexes_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
+export type IndexesMoments_AggregateArgs = {
+	distinct_on?: Maybe<Array<Moments_Select_Column>>;
 	limit?: Maybe<Scalars['Int']>;
 	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
+	order_by?: Maybe<Array<Moments_Order_By>>;
+	where?: Maybe<Moments_Bool_Exp>;
 };
 
 /** aggregated selection of "indexes" */
@@ -136,7 +136,7 @@ export type Indexes_Bool_Exp = {
 	_or?: Maybe<Array<Maybe<Indexes_Bool_Exp>>>;
 	created_at?: Maybe<Timestamptz_Comparison_Exp>;
 	id?: Maybe<Uuid_Comparison_Exp>;
-	moment_indexes?: Maybe<Moment_Index_Bool_Exp>;
+	moments?: Maybe<Moments_Bool_Exp>;
 	title?: Maybe<String_Comparison_Exp>;
 	updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 	user_id?: Maybe<String_Comparison_Exp>;
@@ -152,7 +152,7 @@ export enum Indexes_Constraint {
 export type Indexes_Insert_Input = {
 	created_at?: Maybe<Scalars['timestamptz']>;
 	id?: Maybe<Scalars['uuid']>;
-	moment_indexes?: Maybe<Moment_Index_Arr_Rel_Insert_Input>;
+	moments?: Maybe<Moments_Arr_Rel_Insert_Input>;
 	title?: Maybe<Scalars['String']>;
 	updated_at?: Maybe<Scalars['timestamptz']>;
 	user_id?: Maybe<Scalars['String']>;
@@ -222,7 +222,7 @@ export type Indexes_On_Conflict = {
 export type Indexes_Order_By = {
 	created_at?: Maybe<Order_By>;
 	id?: Maybe<Order_By>;
-	moment_indexes_aggregate?: Maybe<Moment_Index_Aggregate_Order_By>;
+	moments_aggregate?: Maybe<Moments_Aggregate_Order_By>;
 	title?: Maybe<Order_By>;
 	updated_at?: Maybe<Order_By>;
 	user_id?: Maybe<Order_By>;
@@ -268,364 +268,6 @@ export enum Indexes_Update_Column {
 	UpdatedAt = 'updated_at',
 	/** column name */
 	UserId = 'user_id',
-}
-
-/** columns and relationships of "moment_index" */
-export type Moment_Index = {
-	__typename?: 'moment_index';
-	created_at: Scalars['timestamptz'];
-	id: Scalars['uuid'];
-	/** An object relationship */
-	index: Indexes;
-	index_id: Scalars['uuid'];
-	/** An object relationship */
-	moment: Moments;
-	moment_id: Scalars['uuid'];
-};
-
-/** aggregated selection of "moment_index" */
-export type Moment_Index_Aggregate = {
-	__typename?: 'moment_index_aggregate';
-	aggregate?: Maybe<Moment_Index_Aggregate_Fields>;
-	nodes: Array<Moment_Index>;
-};
-
-/** aggregate fields of "moment_index" */
-export type Moment_Index_Aggregate_Fields = {
-	__typename?: 'moment_index_aggregate_fields';
-	count?: Maybe<Scalars['Int']>;
-	max?: Maybe<Moment_Index_Max_Fields>;
-	min?: Maybe<Moment_Index_Min_Fields>;
-};
-
-/** aggregate fields of "moment_index" */
-export type Moment_Index_Aggregate_FieldsCountArgs = {
-	columns?: Maybe<Array<Moment_Index_Select_Column>>;
-	distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "moment_index" */
-export type Moment_Index_Aggregate_Order_By = {
-	count?: Maybe<Order_By>;
-	max?: Maybe<Moment_Index_Max_Order_By>;
-	min?: Maybe<Moment_Index_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "moment_index" */
-export type Moment_Index_Arr_Rel_Insert_Input = {
-	data: Array<Moment_Index_Insert_Input>;
-	on_conflict?: Maybe<Moment_Index_On_Conflict>;
-};
-
-/** Boolean expression to filter rows from the table "moment_index". All fields are combined with a logical 'AND'. */
-export type Moment_Index_Bool_Exp = {
-	_and?: Maybe<Array<Maybe<Moment_Index_Bool_Exp>>>;
-	_not?: Maybe<Moment_Index_Bool_Exp>;
-	_or?: Maybe<Array<Maybe<Moment_Index_Bool_Exp>>>;
-	created_at?: Maybe<Timestamptz_Comparison_Exp>;
-	id?: Maybe<Uuid_Comparison_Exp>;
-	index?: Maybe<Indexes_Bool_Exp>;
-	index_id?: Maybe<Uuid_Comparison_Exp>;
-	moment?: Maybe<Moments_Bool_Exp>;
-	moment_id?: Maybe<Uuid_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "moment_index" */
-export enum Moment_Index_Constraint {
-	/** unique or primary key constraint */
-	MomentIndexPkey = 'moment_index_pkey',
-}
-
-/** input type for inserting data into table "moment_index" */
-export type Moment_Index_Insert_Input = {
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	index?: Maybe<Indexes_Obj_Rel_Insert_Input>;
-	index_id?: Maybe<Scalars['uuid']>;
-	moment?: Maybe<Moments_Obj_Rel_Insert_Input>;
-	moment_id?: Maybe<Scalars['uuid']>;
-};
-
-/** aggregate max on columns */
-export type Moment_Index_Max_Fields = {
-	__typename?: 'moment_index_max_fields';
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	index_id?: Maybe<Scalars['uuid']>;
-	moment_id?: Maybe<Scalars['uuid']>;
-};
-
-/** order by max() on columns of table "moment_index" */
-export type Moment_Index_Max_Order_By = {
-	created_at?: Maybe<Order_By>;
-	id?: Maybe<Order_By>;
-	index_id?: Maybe<Order_By>;
-	moment_id?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Moment_Index_Min_Fields = {
-	__typename?: 'moment_index_min_fields';
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	index_id?: Maybe<Scalars['uuid']>;
-	moment_id?: Maybe<Scalars['uuid']>;
-};
-
-/** order by min() on columns of table "moment_index" */
-export type Moment_Index_Min_Order_By = {
-	created_at?: Maybe<Order_By>;
-	id?: Maybe<Order_By>;
-	index_id?: Maybe<Order_By>;
-	moment_id?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "moment_index" */
-export type Moment_Index_Mutation_Response = {
-	__typename?: 'moment_index_mutation_response';
-	/** number of affected rows by the mutation */
-	affected_rows: Scalars['Int'];
-	/** data of the affected rows by the mutation */
-	returning: Array<Moment_Index>;
-};
-
-/** input type for inserting object relation for remote table "moment_index" */
-export type Moment_Index_Obj_Rel_Insert_Input = {
-	data: Moment_Index_Insert_Input;
-	on_conflict?: Maybe<Moment_Index_On_Conflict>;
-};
-
-/** on conflict condition type for table "moment_index" */
-export type Moment_Index_On_Conflict = {
-	constraint: Moment_Index_Constraint;
-	update_columns: Array<Moment_Index_Update_Column>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
-};
-
-/** ordering options when selecting data from "moment_index" */
-export type Moment_Index_Order_By = {
-	created_at?: Maybe<Order_By>;
-	id?: Maybe<Order_By>;
-	index?: Maybe<Indexes_Order_By>;
-	index_id?: Maybe<Order_By>;
-	moment?: Maybe<Moments_Order_By>;
-	moment_id?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: "moment_index" */
-export type Moment_Index_Pk_Columns_Input = {
-	id: Scalars['uuid'];
-};
-
-/** select columns of table "moment_index" */
-export enum Moment_Index_Select_Column {
-	/** column name */
-	CreatedAt = 'created_at',
-	/** column name */
-	Id = 'id',
-	/** column name */
-	IndexId = 'index_id',
-	/** column name */
-	MomentId = 'moment_id',
-}
-
-/** input type for updating data in table "moment_index" */
-export type Moment_Index_Set_Input = {
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	index_id?: Maybe<Scalars['uuid']>;
-	moment_id?: Maybe<Scalars['uuid']>;
-};
-
-/** update columns of table "moment_index" */
-export enum Moment_Index_Update_Column {
-	/** column name */
-	CreatedAt = 'created_at',
-	/** column name */
-	Id = 'id',
-	/** column name */
-	IndexId = 'index_id',
-	/** column name */
-	MomentId = 'moment_id',
-}
-
-/** columns and relationships of "moment_process" */
-export type Moment_Process = {
-	__typename?: 'moment_process';
-	created_at: Scalars['timestamptz'];
-	id: Scalars['uuid'];
-	/** An object relationship */
-	moment: Moments;
-	moment_id: Scalars['uuid'];
-	/** An object relationship */
-	process: Processes;
-	process_id: Scalars['uuid'];
-};
-
-/** aggregated selection of "moment_process" */
-export type Moment_Process_Aggregate = {
-	__typename?: 'moment_process_aggregate';
-	aggregate?: Maybe<Moment_Process_Aggregate_Fields>;
-	nodes: Array<Moment_Process>;
-};
-
-/** aggregate fields of "moment_process" */
-export type Moment_Process_Aggregate_Fields = {
-	__typename?: 'moment_process_aggregate_fields';
-	count?: Maybe<Scalars['Int']>;
-	max?: Maybe<Moment_Process_Max_Fields>;
-	min?: Maybe<Moment_Process_Min_Fields>;
-};
-
-/** aggregate fields of "moment_process" */
-export type Moment_Process_Aggregate_FieldsCountArgs = {
-	columns?: Maybe<Array<Moment_Process_Select_Column>>;
-	distinct?: Maybe<Scalars['Boolean']>;
-};
-
-/** order by aggregate values of table "moment_process" */
-export type Moment_Process_Aggregate_Order_By = {
-	count?: Maybe<Order_By>;
-	max?: Maybe<Moment_Process_Max_Order_By>;
-	min?: Maybe<Moment_Process_Min_Order_By>;
-};
-
-/** input type for inserting array relation for remote table "moment_process" */
-export type Moment_Process_Arr_Rel_Insert_Input = {
-	data: Array<Moment_Process_Insert_Input>;
-	on_conflict?: Maybe<Moment_Process_On_Conflict>;
-};
-
-/** Boolean expression to filter rows from the table "moment_process". All fields are combined with a logical 'AND'. */
-export type Moment_Process_Bool_Exp = {
-	_and?: Maybe<Array<Maybe<Moment_Process_Bool_Exp>>>;
-	_not?: Maybe<Moment_Process_Bool_Exp>;
-	_or?: Maybe<Array<Maybe<Moment_Process_Bool_Exp>>>;
-	created_at?: Maybe<Timestamptz_Comparison_Exp>;
-	id?: Maybe<Uuid_Comparison_Exp>;
-	moment?: Maybe<Moments_Bool_Exp>;
-	moment_id?: Maybe<Uuid_Comparison_Exp>;
-	process?: Maybe<Processes_Bool_Exp>;
-	process_id?: Maybe<Uuid_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "moment_process" */
-export enum Moment_Process_Constraint {
-	/** unique or primary key constraint */
-	MomentProcessPkey = 'moment_process_pkey',
-}
-
-/** input type for inserting data into table "moment_process" */
-export type Moment_Process_Insert_Input = {
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	moment?: Maybe<Moments_Obj_Rel_Insert_Input>;
-	moment_id?: Maybe<Scalars['uuid']>;
-	process?: Maybe<Processes_Obj_Rel_Insert_Input>;
-	process_id?: Maybe<Scalars['uuid']>;
-};
-
-/** aggregate max on columns */
-export type Moment_Process_Max_Fields = {
-	__typename?: 'moment_process_max_fields';
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	moment_id?: Maybe<Scalars['uuid']>;
-	process_id?: Maybe<Scalars['uuid']>;
-};
-
-/** order by max() on columns of table "moment_process" */
-export type Moment_Process_Max_Order_By = {
-	created_at?: Maybe<Order_By>;
-	id?: Maybe<Order_By>;
-	moment_id?: Maybe<Order_By>;
-	process_id?: Maybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Moment_Process_Min_Fields = {
-	__typename?: 'moment_process_min_fields';
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	moment_id?: Maybe<Scalars['uuid']>;
-	process_id?: Maybe<Scalars['uuid']>;
-};
-
-/** order by min() on columns of table "moment_process" */
-export type Moment_Process_Min_Order_By = {
-	created_at?: Maybe<Order_By>;
-	id?: Maybe<Order_By>;
-	moment_id?: Maybe<Order_By>;
-	process_id?: Maybe<Order_By>;
-};
-
-/** response of any mutation on the table "moment_process" */
-export type Moment_Process_Mutation_Response = {
-	__typename?: 'moment_process_mutation_response';
-	/** number of affected rows by the mutation */
-	affected_rows: Scalars['Int'];
-	/** data of the affected rows by the mutation */
-	returning: Array<Moment_Process>;
-};
-
-/** input type for inserting object relation for remote table "moment_process" */
-export type Moment_Process_Obj_Rel_Insert_Input = {
-	data: Moment_Process_Insert_Input;
-	on_conflict?: Maybe<Moment_Process_On_Conflict>;
-};
-
-/** on conflict condition type for table "moment_process" */
-export type Moment_Process_On_Conflict = {
-	constraint: Moment_Process_Constraint;
-	update_columns: Array<Moment_Process_Update_Column>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
-};
-
-/** ordering options when selecting data from "moment_process" */
-export type Moment_Process_Order_By = {
-	created_at?: Maybe<Order_By>;
-	id?: Maybe<Order_By>;
-	moment?: Maybe<Moments_Order_By>;
-	moment_id?: Maybe<Order_By>;
-	process?: Maybe<Processes_Order_By>;
-	process_id?: Maybe<Order_By>;
-};
-
-/** primary key columns input for table: "moment_process" */
-export type Moment_Process_Pk_Columns_Input = {
-	id: Scalars['uuid'];
-};
-
-/** select columns of table "moment_process" */
-export enum Moment_Process_Select_Column {
-	/** column name */
-	CreatedAt = 'created_at',
-	/** column name */
-	Id = 'id',
-	/** column name */
-	MomentId = 'moment_id',
-	/** column name */
-	ProcessId = 'process_id',
-}
-
-/** input type for updating data in table "moment_process" */
-export type Moment_Process_Set_Input = {
-	created_at?: Maybe<Scalars['timestamptz']>;
-	id?: Maybe<Scalars['uuid']>;
-	moment_id?: Maybe<Scalars['uuid']>;
-	process_id?: Maybe<Scalars['uuid']>;
-};
-
-/** update columns of table "moment_process" */
-export enum Moment_Process_Update_Column {
-	/** column name */
-	CreatedAt = 'created_at',
-	/** column name */
-	Id = 'id',
-	/** column name */
-	MomentId = 'moment_id',
-	/** column name */
-	ProcessId = 'process_id',
 }
 
 /** columns and relationships of "moment_tag" */
@@ -806,63 +448,25 @@ export type Moments = {
 	emotion?: Maybe<Scalars['String']>;
 	id: Scalars['uuid'];
 	images?: Maybe<Scalars['_text']>;
+	/** An object relationship */
+	index?: Maybe<Indexes>;
+	index_id?: Maybe<Scalars['uuid']>;
 	is_favorite?: Maybe<Scalars['Boolean']>;
 	is_thanks: Scalars['Boolean'];
-	/** An array relationship */
-	moment_indexes: Array<Moment_Index>;
-	/** An aggregated array relationship */
-	moment_indexes_aggregate: Moment_Index_Aggregate;
-	/** An array relationship */
-	moment_processes: Array<Moment_Process>;
-	/** An aggregated array relationship */
-	moment_processes_aggregate: Moment_Process_Aggregate;
 	/** An array relationship */
 	moment_tags: Array<Moment_Tag>;
 	/** An aggregated array relationship */
 	moment_tags_aggregate: Moment_Tag_Aggregate;
 	note_voice?: Maybe<Scalars['String']>;
 	note_voices?: Maybe<Scalars['_text']>;
+	/** An object relationship */
+	process?: Maybe<Processes>;
+	process_id?: Maybe<Scalars['uuid']>;
 	updated_at: Scalars['timestamptz'];
 	/** An object relationship */
 	user: Users;
 	user_id: Scalars['String'];
 	videos?: Maybe<Scalars['_text']>;
-};
-
-/** columns and relationships of "moments" */
-export type MomentsMoment_IndexesArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
-};
-
-/** columns and relationships of "moments" */
-export type MomentsMoment_Indexes_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
-};
-
-/** columns and relationships of "moments" */
-export type MomentsMoment_ProcessesArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
-};
-
-/** columns and relationships of "moments" */
-export type MomentsMoment_Processes_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
 };
 
 /** columns and relationships of "moments" */
@@ -927,13 +531,15 @@ export type Moments_Bool_Exp = {
 	emotion?: Maybe<String_Comparison_Exp>;
 	id?: Maybe<Uuid_Comparison_Exp>;
 	images?: Maybe<_Text_Comparison_Exp>;
+	index?: Maybe<Indexes_Bool_Exp>;
+	index_id?: Maybe<Uuid_Comparison_Exp>;
 	is_favorite?: Maybe<Boolean_Comparison_Exp>;
 	is_thanks?: Maybe<Boolean_Comparison_Exp>;
-	moment_indexes?: Maybe<Moment_Index_Bool_Exp>;
-	moment_processes?: Maybe<Moment_Process_Bool_Exp>;
 	moment_tags?: Maybe<Moment_Tag_Bool_Exp>;
 	note_voice?: Maybe<String_Comparison_Exp>;
 	note_voices?: Maybe<_Text_Comparison_Exp>;
+	process?: Maybe<Processes_Bool_Exp>;
+	process_id?: Maybe<Uuid_Comparison_Exp>;
 	updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 	user?: Maybe<Users_Bool_Exp>;
 	user_id?: Maybe<String_Comparison_Exp>;
@@ -953,13 +559,15 @@ export type Moments_Insert_Input = {
 	emotion?: Maybe<Scalars['String']>;
 	id?: Maybe<Scalars['uuid']>;
 	images?: Maybe<Scalars['_text']>;
+	index?: Maybe<Indexes_Obj_Rel_Insert_Input>;
+	index_id?: Maybe<Scalars['uuid']>;
 	is_favorite?: Maybe<Scalars['Boolean']>;
 	is_thanks?: Maybe<Scalars['Boolean']>;
-	moment_indexes?: Maybe<Moment_Index_Arr_Rel_Insert_Input>;
-	moment_processes?: Maybe<Moment_Process_Arr_Rel_Insert_Input>;
 	moment_tags?: Maybe<Moment_Tag_Arr_Rel_Insert_Input>;
 	note_voice?: Maybe<Scalars['String']>;
 	note_voices?: Maybe<Scalars['_text']>;
+	process?: Maybe<Processes_Obj_Rel_Insert_Input>;
+	process_id?: Maybe<Scalars['uuid']>;
 	updated_at?: Maybe<Scalars['timestamptz']>;
 	user?: Maybe<Users_Obj_Rel_Insert_Input>;
 	user_id?: Maybe<Scalars['String']>;
@@ -973,7 +581,9 @@ export type Moments_Max_Fields = {
 	created_at?: Maybe<Scalars['timestamptz']>;
 	emotion?: Maybe<Scalars['String']>;
 	id?: Maybe<Scalars['uuid']>;
+	index_id?: Maybe<Scalars['uuid']>;
 	note_voice?: Maybe<Scalars['String']>;
+	process_id?: Maybe<Scalars['uuid']>;
 	updated_at?: Maybe<Scalars['timestamptz']>;
 	user_id?: Maybe<Scalars['String']>;
 };
@@ -984,7 +594,9 @@ export type Moments_Max_Order_By = {
 	created_at?: Maybe<Order_By>;
 	emotion?: Maybe<Order_By>;
 	id?: Maybe<Order_By>;
+	index_id?: Maybe<Order_By>;
 	note_voice?: Maybe<Order_By>;
+	process_id?: Maybe<Order_By>;
 	updated_at?: Maybe<Order_By>;
 	user_id?: Maybe<Order_By>;
 };
@@ -996,7 +608,9 @@ export type Moments_Min_Fields = {
 	created_at?: Maybe<Scalars['timestamptz']>;
 	emotion?: Maybe<Scalars['String']>;
 	id?: Maybe<Scalars['uuid']>;
+	index_id?: Maybe<Scalars['uuid']>;
 	note_voice?: Maybe<Scalars['String']>;
+	process_id?: Maybe<Scalars['uuid']>;
 	updated_at?: Maybe<Scalars['timestamptz']>;
 	user_id?: Maybe<Scalars['String']>;
 };
@@ -1007,7 +621,9 @@ export type Moments_Min_Order_By = {
 	created_at?: Maybe<Order_By>;
 	emotion?: Maybe<Order_By>;
 	id?: Maybe<Order_By>;
+	index_id?: Maybe<Order_By>;
 	note_voice?: Maybe<Order_By>;
+	process_id?: Maybe<Order_By>;
 	updated_at?: Maybe<Order_By>;
 	user_id?: Maybe<Order_By>;
 };
@@ -1041,13 +657,15 @@ export type Moments_Order_By = {
 	emotion?: Maybe<Order_By>;
 	id?: Maybe<Order_By>;
 	images?: Maybe<Order_By>;
+	index?: Maybe<Indexes_Order_By>;
+	index_id?: Maybe<Order_By>;
 	is_favorite?: Maybe<Order_By>;
 	is_thanks?: Maybe<Order_By>;
-	moment_indexes_aggregate?: Maybe<Moment_Index_Aggregate_Order_By>;
-	moment_processes_aggregate?: Maybe<Moment_Process_Aggregate_Order_By>;
 	moment_tags_aggregate?: Maybe<Moment_Tag_Aggregate_Order_By>;
 	note_voice?: Maybe<Order_By>;
 	note_voices?: Maybe<Order_By>;
+	process?: Maybe<Processes_Order_By>;
+	process_id?: Maybe<Order_By>;
 	updated_at?: Maybe<Order_By>;
 	user?: Maybe<Users_Order_By>;
 	user_id?: Maybe<Order_By>;
@@ -1072,6 +690,8 @@ export enum Moments_Select_Column {
 	/** column name */
 	Images = 'images',
 	/** column name */
+	IndexId = 'index_id',
+	/** column name */
 	IsFavorite = 'is_favorite',
 	/** column name */
 	IsThanks = 'is_thanks',
@@ -1079,6 +699,8 @@ export enum Moments_Select_Column {
 	NoteVoice = 'note_voice',
 	/** column name */
 	NoteVoices = 'note_voices',
+	/** column name */
+	ProcessId = 'process_id',
 	/** column name */
 	UpdatedAt = 'updated_at',
 	/** column name */
@@ -1094,10 +716,12 @@ export type Moments_Set_Input = {
 	emotion?: Maybe<Scalars['String']>;
 	id?: Maybe<Scalars['uuid']>;
 	images?: Maybe<Scalars['_text']>;
+	index_id?: Maybe<Scalars['uuid']>;
 	is_favorite?: Maybe<Scalars['Boolean']>;
 	is_thanks?: Maybe<Scalars['Boolean']>;
 	note_voice?: Maybe<Scalars['String']>;
 	note_voices?: Maybe<Scalars['_text']>;
+	process_id?: Maybe<Scalars['uuid']>;
 	updated_at?: Maybe<Scalars['timestamptz']>;
 	user_id?: Maybe<Scalars['String']>;
 	videos?: Maybe<Scalars['_text']>;
@@ -1116,6 +740,8 @@ export enum Moments_Update_Column {
 	/** column name */
 	Images = 'images',
 	/** column name */
+	IndexId = 'index_id',
+	/** column name */
 	IsFavorite = 'is_favorite',
 	/** column name */
 	IsThanks = 'is_thanks',
@@ -1123,6 +749,8 @@ export enum Moments_Update_Column {
 	NoteVoice = 'note_voice',
 	/** column name */
 	NoteVoices = 'note_voices',
+	/** column name */
+	ProcessId = 'process_id',
 	/** column name */
 	UpdatedAt = 'updated_at',
 	/** column name */
@@ -1138,14 +766,6 @@ export type Mutation_Root = {
 	delete_indexes?: Maybe<Indexes_Mutation_Response>;
 	/** delete single row from the table: "indexes" */
 	delete_indexes_by_pk?: Maybe<Indexes>;
-	/** delete data from the table: "moment_index" */
-	delete_moment_index?: Maybe<Moment_Index_Mutation_Response>;
-	/** delete single row from the table: "moment_index" */
-	delete_moment_index_by_pk?: Maybe<Moment_Index>;
-	/** delete data from the table: "moment_process" */
-	delete_moment_process?: Maybe<Moment_Process_Mutation_Response>;
-	/** delete single row from the table: "moment_process" */
-	delete_moment_process_by_pk?: Maybe<Moment_Process>;
 	/** delete data from the table: "moment_tag" */
 	delete_moment_tag?: Maybe<Moment_Tag_Mutation_Response>;
 	/** delete single row from the table: "moment_tag" */
@@ -1174,14 +794,6 @@ export type Mutation_Root = {
 	insert_indexes?: Maybe<Indexes_Mutation_Response>;
 	/** insert a single row into the table: "indexes" */
 	insert_indexes_one?: Maybe<Indexes>;
-	/** insert data into the table: "moment_index" */
-	insert_moment_index?: Maybe<Moment_Index_Mutation_Response>;
-	/** insert a single row into the table: "moment_index" */
-	insert_moment_index_one?: Maybe<Moment_Index>;
-	/** insert data into the table: "moment_process" */
-	insert_moment_process?: Maybe<Moment_Process_Mutation_Response>;
-	/** insert a single row into the table: "moment_process" */
-	insert_moment_process_one?: Maybe<Moment_Process>;
 	/** insert data into the table: "moment_tag" */
 	insert_moment_tag?: Maybe<Moment_Tag_Mutation_Response>;
 	/** insert a single row into the table: "moment_tag" */
@@ -1210,14 +822,6 @@ export type Mutation_Root = {
 	update_indexes?: Maybe<Indexes_Mutation_Response>;
 	/** update single row of the table: "indexes" */
 	update_indexes_by_pk?: Maybe<Indexes>;
-	/** update data of the table: "moment_index" */
-	update_moment_index?: Maybe<Moment_Index_Mutation_Response>;
-	/** update single row of the table: "moment_index" */
-	update_moment_index_by_pk?: Maybe<Moment_Index>;
-	/** update data of the table: "moment_process" */
-	update_moment_process?: Maybe<Moment_Process_Mutation_Response>;
-	/** update single row of the table: "moment_process" */
-	update_moment_process_by_pk?: Maybe<Moment_Process>;
 	/** update data of the table: "moment_tag" */
 	update_moment_tag?: Maybe<Moment_Tag_Mutation_Response>;
 	/** update single row of the table: "moment_tag" */
@@ -1251,26 +855,6 @@ export type Mutation_RootDelete_IndexesArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Indexes_By_PkArgs = {
-	id: Scalars['uuid'];
-};
-
-/** mutation root */
-export type Mutation_RootDelete_Moment_IndexArgs = {
-	where: Moment_Index_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootDelete_Moment_Index_By_PkArgs = {
-	id: Scalars['uuid'];
-};
-
-/** mutation root */
-export type Mutation_RootDelete_Moment_ProcessArgs = {
-	where: Moment_Process_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootDelete_Moment_Process_By_PkArgs = {
 	id: Scalars['uuid'];
 };
 
@@ -1346,30 +930,6 @@ export type Mutation_RootInsert_IndexesArgs = {
 export type Mutation_RootInsert_Indexes_OneArgs = {
 	object: Indexes_Insert_Input;
 	on_conflict?: Maybe<Indexes_On_Conflict>;
-};
-
-/** mutation root */
-export type Mutation_RootInsert_Moment_IndexArgs = {
-	objects: Array<Moment_Index_Insert_Input>;
-	on_conflict?: Maybe<Moment_Index_On_Conflict>;
-};
-
-/** mutation root */
-export type Mutation_RootInsert_Moment_Index_OneArgs = {
-	object: Moment_Index_Insert_Input;
-	on_conflict?: Maybe<Moment_Index_On_Conflict>;
-};
-
-/** mutation root */
-export type Mutation_RootInsert_Moment_ProcessArgs = {
-	objects: Array<Moment_Process_Insert_Input>;
-	on_conflict?: Maybe<Moment_Process_On_Conflict>;
-};
-
-/** mutation root */
-export type Mutation_RootInsert_Moment_Process_OneArgs = {
-	object: Moment_Process_Insert_Input;
-	on_conflict?: Maybe<Moment_Process_On_Conflict>;
 };
 
 /** mutation root */
@@ -1454,30 +1014,6 @@ export type Mutation_RootUpdate_IndexesArgs = {
 export type Mutation_RootUpdate_Indexes_By_PkArgs = {
 	_set?: Maybe<Indexes_Set_Input>;
 	pk_columns: Indexes_Pk_Columns_Input;
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_Moment_IndexArgs = {
-	_set?: Maybe<Moment_Index_Set_Input>;
-	where: Moment_Index_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_Moment_Index_By_PkArgs = {
-	_set?: Maybe<Moment_Index_Set_Input>;
-	pk_columns: Moment_Index_Pk_Columns_Input;
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_Moment_ProcessArgs = {
-	_set?: Maybe<Moment_Process_Set_Input>;
-	where: Moment_Process_Bool_Exp;
-};
-
-/** mutation root */
-export type Mutation_RootUpdate_Moment_Process_By_PkArgs = {
-	_set?: Maybe<Moment_Process_Set_Input>;
-	pk_columns: Moment_Process_Pk_Columns_Input;
 };
 
 /** mutation root */
@@ -1748,30 +1284,30 @@ export type Processes = {
 	id: Scalars['uuid'];
 	is_completed: Scalars['Boolean'];
 	/** An array relationship */
-	moment_processes: Array<Moment_Process>;
+	moments: Array<Moments>;
 	/** An aggregated array relationship */
-	moment_processes_aggregate: Moment_Process_Aggregate;
+	moments_aggregate: Moments_Aggregate;
 	title: Scalars['String'];
 	updated_at: Scalars['timestamptz'];
 	user_id: Scalars['String'];
 };
 
 /** columns and relationships of "processes" */
-export type ProcessesMoment_ProcessesArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
+export type ProcessesMomentsArgs = {
+	distinct_on?: Maybe<Array<Moments_Select_Column>>;
 	limit?: Maybe<Scalars['Int']>;
 	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
+	order_by?: Maybe<Array<Moments_Order_By>>;
+	where?: Maybe<Moments_Bool_Exp>;
 };
 
 /** columns and relationships of "processes" */
-export type ProcessesMoment_Processes_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
+export type ProcessesMoments_AggregateArgs = {
+	distinct_on?: Maybe<Array<Moments_Select_Column>>;
 	limit?: Maybe<Scalars['Int']>;
 	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
+	order_by?: Maybe<Array<Moments_Order_By>>;
+	where?: Maybe<Moments_Bool_Exp>;
 };
 
 /** aggregated selection of "processes" */
@@ -1816,7 +1352,7 @@ export type Processes_Bool_Exp = {
 	created_at?: Maybe<Timestamptz_Comparison_Exp>;
 	id?: Maybe<Uuid_Comparison_Exp>;
 	is_completed?: Maybe<Boolean_Comparison_Exp>;
-	moment_processes?: Maybe<Moment_Process_Bool_Exp>;
+	moments?: Maybe<Moments_Bool_Exp>;
 	title?: Maybe<String_Comparison_Exp>;
 	updated_at?: Maybe<Timestamptz_Comparison_Exp>;
 	user_id?: Maybe<String_Comparison_Exp>;
@@ -1833,7 +1369,7 @@ export type Processes_Insert_Input = {
 	created_at?: Maybe<Scalars['timestamptz']>;
 	id?: Maybe<Scalars['uuid']>;
 	is_completed?: Maybe<Scalars['Boolean']>;
-	moment_processes?: Maybe<Moment_Process_Arr_Rel_Insert_Input>;
+	moments?: Maybe<Moments_Arr_Rel_Insert_Input>;
 	title?: Maybe<Scalars['String']>;
 	updated_at?: Maybe<Scalars['timestamptz']>;
 	user_id?: Maybe<Scalars['String']>;
@@ -1904,7 +1440,7 @@ export type Processes_Order_By = {
 	created_at?: Maybe<Order_By>;
 	id?: Maybe<Order_By>;
 	is_completed?: Maybe<Order_By>;
-	moment_processes_aggregate?: Maybe<Moment_Process_Aggregate_Order_By>;
+	moments_aggregate?: Maybe<Moments_Aggregate_Order_By>;
 	title?: Maybe<Order_By>;
 	updated_at?: Maybe<Order_By>;
 	user_id?: Maybe<Order_By>;
@@ -1966,18 +1502,6 @@ export type Query_Root = {
 	indexes_aggregate: Indexes_Aggregate;
 	/** fetch data from the table: "indexes" using primary key columns */
 	indexes_by_pk?: Maybe<Indexes>;
-	/** fetch data from the table: "moment_index" */
-	moment_index: Array<Moment_Index>;
-	/** fetch aggregated fields from the table: "moment_index" */
-	moment_index_aggregate: Moment_Index_Aggregate;
-	/** fetch data from the table: "moment_index" using primary key columns */
-	moment_index_by_pk?: Maybe<Moment_Index>;
-	/** fetch data from the table: "moment_process" */
-	moment_process: Array<Moment_Process>;
-	/** fetch aggregated fields from the table: "moment_process" */
-	moment_process_aggregate: Moment_Process_Aggregate;
-	/** fetch data from the table: "moment_process" using primary key columns */
-	moment_process_by_pk?: Maybe<Moment_Process>;
 	/** fetch data from the table: "moment_tag" */
 	moment_tag: Array<Moment_Tag>;
 	/** fetch aggregated fields from the table: "moment_tag" */
@@ -2036,52 +1560,6 @@ export type Query_RootIndexes_AggregateArgs = {
 
 /** query root */
 export type Query_RootIndexes_By_PkArgs = {
-	id: Scalars['uuid'];
-};
-
-/** query root */
-export type Query_RootMoment_IndexArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
-};
-
-/** query root */
-export type Query_RootMoment_Index_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
-};
-
-/** query root */
-export type Query_RootMoment_Index_By_PkArgs = {
-	id: Scalars['uuid'];
-};
-
-/** query root */
-export type Query_RootMoment_ProcessArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
-};
-
-/** query root */
-export type Query_RootMoment_Process_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
-};
-
-/** query root */
-export type Query_RootMoment_Process_By_PkArgs = {
 	id: Scalars['uuid'];
 };
 
@@ -2234,18 +1712,6 @@ export type Subscription_Root = {
 	indexes_aggregate: Indexes_Aggregate;
 	/** fetch data from the table: "indexes" using primary key columns */
 	indexes_by_pk?: Maybe<Indexes>;
-	/** fetch data from the table: "moment_index" */
-	moment_index: Array<Moment_Index>;
-	/** fetch aggregated fields from the table: "moment_index" */
-	moment_index_aggregate: Moment_Index_Aggregate;
-	/** fetch data from the table: "moment_index" using primary key columns */
-	moment_index_by_pk?: Maybe<Moment_Index>;
-	/** fetch data from the table: "moment_process" */
-	moment_process: Array<Moment_Process>;
-	/** fetch aggregated fields from the table: "moment_process" */
-	moment_process_aggregate: Moment_Process_Aggregate;
-	/** fetch data from the table: "moment_process" using primary key columns */
-	moment_process_by_pk?: Maybe<Moment_Process>;
 	/** fetch data from the table: "moment_tag" */
 	moment_tag: Array<Moment_Tag>;
 	/** fetch aggregated fields from the table: "moment_tag" */
@@ -2304,52 +1770,6 @@ export type Subscription_RootIndexes_AggregateArgs = {
 
 /** subscription root */
 export type Subscription_RootIndexes_By_PkArgs = {
-	id: Scalars['uuid'];
-};
-
-/** subscription root */
-export type Subscription_RootMoment_IndexArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
-};
-
-/** subscription root */
-export type Subscription_RootMoment_Index_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Index_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Index_Order_By>>;
-	where?: Maybe<Moment_Index_Bool_Exp>;
-};
-
-/** subscription root */
-export type Subscription_RootMoment_Index_By_PkArgs = {
-	id: Scalars['uuid'];
-};
-
-/** subscription root */
-export type Subscription_RootMoment_ProcessArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
-};
-
-/** subscription root */
-export type Subscription_RootMoment_Process_AggregateArgs = {
-	distinct_on?: Maybe<Array<Moment_Process_Select_Column>>;
-	limit?: Maybe<Scalars['Int']>;
-	offset?: Maybe<Scalars['Int']>;
-	order_by?: Maybe<Array<Moment_Process_Order_By>>;
-	where?: Maybe<Moment_Process_Bool_Exp>;
-};
-
-/** subscription root */
-export type Subscription_RootMoment_Process_By_PkArgs = {
 	id: Scalars['uuid'];
 };
 
