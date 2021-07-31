@@ -114,3 +114,14 @@ export const GET_MOMENTS_INSIGHTS = gql`
 		}
 	}
 `;
+
+export const GET_INSIGHTS_MOMENTS = gql`
+	query GET_INSIGHTS_MOMENTS($startDate: timestamptz, $endDate: timestamptz) {
+		moments(where: { created_at: { _gt: $endDate, _lt: $startDate } }) {
+			id
+			content
+			images
+			created_at
+		}
+	}
+`;

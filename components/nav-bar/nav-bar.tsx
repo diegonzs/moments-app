@@ -118,7 +118,7 @@ export const NavBar: React.FC = () => {
 				</Link>
 				<NavigateIcon
 					icon="bar-chart"
-					route="insights"
+					route="insightsv2"
 					selectedRoute={selectedRoute}
 				/>
 				<NavigateIcon

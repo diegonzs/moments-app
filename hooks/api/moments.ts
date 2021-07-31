@@ -8,6 +8,7 @@ import {
 	GET_MOMENTS_BY_TAG,
 	GET_FAVORITE_MOMENTS,
 	GET_MOMENTS_INSIGHTS,
+	GET_INSIGHTS_MOMENTS,
 } from 'gql/queries';
 import { useUser } from 'hooks/user/useUser';
 import moment from 'moment';
@@ -203,6 +204,32 @@ export const useMomentsByTimeAndPeriod = (time: string, period: string) => {
 
 	return {
 		moments: data?.moments,
+		isLoading: !error && !data,
+		isError: !!error,
+		error: error,
+		mutate,
+	};
+};
+
+export const useMomentsByInsights = () => {
+	const user = useUser();
+	const token = user?.token;
+
+	const endDateOfToday = moment().endOf('day').format();
+
+	const { data, error, mutate } = useSWR<{ moments: Moment[] }, string>(
+		[GET_INSIGHTS_MOMENTS, token],
+		(query, jwt) =>
+			fetcherGraph<
+				{ moments: Moment[] },
+				{ startDate: string; endDate: string }
+			>(query, jwt, {
+				startDate: endDateOfToday,
+				endDate: moment().subtract(60, 'days').startOf('day').format(),
+			})
+	);
+	return {
+		insights: data,
 		isLoading: !error && !data,
 		isError: !!error,
 		error: error,

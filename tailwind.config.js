@@ -56,6 +56,10 @@ module.exports = {
 					video: 'var(--color-content-video)',
 					voice: 'var(--color-content-voice)',
 				},
+				graph: {
+					from: 'rgba(148, 99, 62, 0.4)',
+					to: 'rgba(148, 99, 62, 0.05)',
+				},
 			},
 		},
 	},
