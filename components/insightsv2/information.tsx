@@ -2,7 +2,12 @@ import * as React from 'react';
 import { Trans } from '@lingui/macro';
 import { Caption, Subtitle } from 'components/typography';
 
-export const Information = () => {
+interface InformationProps {
+	moments: number;
+	tags: string[];
+}
+
+export const Information: React.FC<InformationProps> = ({ moments, tags }) => {
 	return (
 		<div className="flex flex-col mx-5 mt-6">
 			<div className="grid grid-flow-col gap-14 w-max">
@@ -14,7 +19,7 @@ export const Information = () => {
 							Moments
 						</Trans>
 					</Caption>
-					<Subtitle type="1">42</Subtitle>
+					<Subtitle type="1">{moments}</Subtitle>
 				</div>
 				<div className="flex flex-col">
 					<Caption type="3" className="mb-2 text-primary-40">
@@ -32,7 +37,7 @@ export const Information = () => {
 					<Trans>Most used hastags</Trans>
 				</Subtitle>
 				<ul className="grid gap-3">
-					{['Family', 'Sidehustling', 'Foodporn'].map((elem, index) => (
+					{tags.map((elem, index) => (
 						<li key={elem}>
 							<Subtitle type="1" className="text-primary">
 								{index + 1}. #{elem}

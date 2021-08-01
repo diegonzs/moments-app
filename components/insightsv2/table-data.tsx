@@ -6,12 +6,18 @@ interface TableDataProps {
 	total: number;
 	words: number;
 	images: number;
+	videos: number;
+	audios: number;
+	tags: number;
 }
 
 export const TableData: React.FC<TableDataProps> = ({
 	total,
 	words,
 	images,
+	videos,
+	audios,
+	tags,
 }) => {
 	return (
 		<div className="flex flex-col mx-5 mt-8">
@@ -23,9 +29,11 @@ export const TableData: React.FC<TableDataProps> = ({
 			</div>
 			<div className="bg-background-nav py-4 px-5 grid grid-cols-3 gap-4">
 				<InfoContent title="Moments" value={`${total}`} />
-				<InfoContent title="hashtags" value="6" />
+				<InfoContent title="hashtags" value={`${tags}`} />
 				<InfoContent title="Words" value={`${words}`} />
 				<InfoContent title="Images" value={`${images}`} />
+				<InfoContent title="Videos" value={`${videos}`} />
+				<InfoContent title="Images" value={`${audios}`} />
 			</div>
 		</div>
 	);

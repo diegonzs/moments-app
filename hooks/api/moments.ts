@@ -12,6 +12,7 @@ import {
 } from 'gql/queries';
 import { useUser } from 'hooks/user/useUser';
 import moment from 'moment';
+import { Moments, Tags } from 'types/schema-types';
 
 export const useMoments = (config?: ConfigInterface) => {
 	const user = useUser();
@@ -217,17 +218,19 @@ export const useMomentsByInsights = () => {
 
 	const endDateOfToday = moment().endOf('day').format();
 
-	const { data, error, mutate } = useSWR<{ moments: Moment[] }, string>(
-		[GET_INSIGHTS_MOMENTS, token],
-		(query, jwt) =>
-			fetcherGraph<
-				{ moments: Moment[] },
-				{ startDate: string; endDate: string }
-			>(query, jwt, {
-				startDate: endDateOfToday,
-				endDate: moment().subtract(60, 'days').startOf('day').format(),
-			})
+	const { data, error, mutate } = useSWR<
+		{ moments: Moments[]; tags: Tags[] },
+		string
+	>([GET_INSIGHTS_MOMENTS, token], (query, jwt) =>
+		fetcherGraph<
+			{ moments: Moments[]; tags: Tags[] },
+			{ startDate: string; endDate: string }
+		>(query, jwt, {
+			startDate: endDateOfToday,
+			endDate: moment().subtract(60, 'days').startOf('day').format(),
+		})
 	);
+
 	return {
 		insights: data,
 		isLoading: !error && !data,

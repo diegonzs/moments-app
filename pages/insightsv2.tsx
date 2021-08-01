@@ -24,21 +24,39 @@ const InsightsPage = () => {
 		return 0;
 	}, [insights]);
 
-	const images = React.useMemo(() => {
-		if (insights && insights.moments.length) {
-			return insights.moments.reduce((acum, current) => {
-				if (current.images) {
-					return acum + current.images.length;
+	const tags = React.useMemo(() => {
+		const value: string[] = [];
+		if (insights?.tags) {
+			insights.tags.forEach((elem) => {
+				if (!value.includes(elem.text)) {
+					value.push(elem.text);
 				}
-				return acum;
-			}, 0);
+			});
 		}
-		return 0;
+		return value;
+	}, [insights]);
+
+	const { images, audios, videos } = React.useMemo(() => {
+		const value = { images: 0, audios: 0, videos: 0 };
+		if (insights && insights.moments.length) {
+			insights.moments.forEach((elem) => {
+				if (elem.images?.length) {
+					value.images = value.images + elem.images.length;
+				}
+				if (elem.videos?.length) {
+					value.videos = value.videos + elem.videos.length;
+				}
+				if (elem.note_voices) {
+					value.audios = value.audios + elem.note_voices;
+				}
+			});
+		}
+		return value;
 	}, [insights]);
 
 	return (
 		<Layout className="bg-background">
-			{isLoading && insights ? (
+			{isLoading || !insights ? (
 				<Loader />
 			) : (
 				<div>
@@ -47,9 +65,12 @@ const InsightsPage = () => {
 						total={insights?.moments.length || 0}
 						images={images}
 						words={words}
+						audios={audios}
+						videos={videos}
+						tags={tags.length}
 					/>
-					<Graph />
-					<Information />
+					<Graph moments={insights.moments} />
+					<Information tags={tags} moments={insights?.moments.length || 0} />
 				</div>
 			)}
 			<NavBar />
