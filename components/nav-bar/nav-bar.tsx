@@ -4,15 +4,18 @@ import Link from 'next/link';
 
 import { useRouter } from 'next/router';
 import { Icon } from 'components/icon';
+import { Caption } from 'components/typography';
+import { Trans } from '@lingui/macro';
 
 const NavigateIcon: React.FC<{
 	route: string;
 	icon: string;
+	label: string;
 	selectedRoute: string;
-}> = ({ route, icon, selectedRoute }) => {
+}> = ({ route, icon, selectedRoute, label }) => {
 	return (
 		<Link href={route === 'home' ? '/' : `/${route}`}>
-			<div className="z-20 cursor-pointer">
+			<div className="z-20 cursor-pointer flex flex-col items-center">
 				<Icon
 					src={`/images/icons/${icon}.svg`}
 					width="24"
@@ -22,38 +25,15 @@ const NavigateIcon: React.FC<{
 						{ 'text-primary': route !== selectedRoute }
 					)}
 				/>
-			</div>
-		</Link>
-	);
-};
-
-const CreateIcon: React.FC<{ type: string; icon: string }> = ({
-	type,
-	icon,
-}) => {
-	return (
-		<Link href={`/create/${type}`}>
-			<div className="flex flex-col items-center cursor-pointer">
-				<div
+				<Caption
+					type="2"
 					className={clsx(
-						'flex items-center justify-center mb-2 w-10 h-10 bg-background border-2 rounded-full',
-						{ 'border-content-note': type === 'note' },
-						{ 'border-content-thank': type === 'thank' },
-						{ 'border-content-voice': type === 'voice' },
-						{ 'border-content-image': type === 'image' },
-						{ 'border-content-video': type === 'video' }
+						'mt-1',
+						route === selectedRoute ? 'text-secondary' : 'text-primary'
 					)}
 				>
-					<Icon
-						src={`/images/icons/${icon}.svg`}
-						width="24"
-						height="24"
-						className="text-primary"
-					/>
-				</div>
-				<p className="text-primary-60 font-sans text-xs font-medium capitalize">
-					{type}
-				</p>
+					{label}
+				</Caption>
 			</div>
 		</Link>
 	);
@@ -81,63 +61,57 @@ export const NavBar: React.FC = () => {
 	return (
 		<div
 			className={clsx(
-				'fixed -bottom-32 left-0 flex flex-col p-8 w-full bg-background-nav rounded-t-3xl transform transition-transform duration-300'
+				'fixed bottom-0 h-16 left-0 flex flex-col p-8 w-full bg-background-nav rounded-t-3xl transform transition-transform duration-300'
 				// { '-translate-y-32': isOpen }
 			)}
 		>
 			<div className="flex items-center justify-between h-full">
-				<NavigateIcon icon="home" route="home" selectedRoute={selectedRoute} />
+				<NavigateIcon
+					icon="home"
+					route="home"
+					selectedRoute={selectedRoute}
+					label="All"
+				/>
 				<NavigateIcon
 					icon="archive"
 					route="memories"
 					selectedRoute={selectedRoute}
+					label="Memories"
 				/>
 				<Link href="/create">
-					<div
-						className={clsx(
-							'flex items-center justify-center w-12 h-12 border-2 border-primary rounded-full cursor-pointer transform transition-all duration-300 bg-primary',
-							'focus:outline-none'
-							// {
-							// 	'bg-primary-10 rotate-45': isOpen,
-							// 	'bg-primary': !isOpen,
-							// }
-						)}
-						// onClick={() => setIsOpen(!isOpen)}
-					>
-						<Icon
-							src="/images/icons/plus.svg"
-							width="18"
-							height="18"
+					<div className="flex flex-col items-center">
+						<div
 							className={clsx(
-								'stroke-current transition-colors duration-300 text-background-nav'
-								// { 'text-primary': isOpen },
-								// { 'text-background-nav': !isOpen }
+								'flex items-center justify-center w-6 h-6 border-2 border-primary rounded-[4px] cursor-pointer transform transition-all duration-300 bg-primary',
+								'focus:outline-none'
 							)}
-						/>
+						>
+							<Icon
+								src="/images/icons/plus.svg"
+								width="18"
+								height="18"
+								className={clsx(
+									'stroke-current transition-colors duration-300 text-background-nav'
+								)}
+							/>
+						</div>
+						<Caption type="2" className="mt-1 text-primary">
+							<Trans>Create</Trans>
+						</Caption>
 					</div>
 				</Link>
 				<NavigateIcon
 					icon="bar-chart"
 					route="insightsv2"
+					label="Insights"
 					selectedRoute={selectedRoute}
 				/>
 				<NavigateIcon
 					icon="settings"
 					route="settings"
+					label="Settings"
 					selectedRoute={selectedRoute}
 				/>
-			</div>
-			<div className="flex flex-col mt-6 bg-background-nav">
-				<p className="mb-3 text-primary font-sans text-sm font-semibold">
-					Create a moment
-				</p>
-				<div className="flex justify-between">
-					<CreateIcon type="note" icon="edit" />
-					<CreateIcon type="thank" icon="heart" />
-					<CreateIcon type="voice" icon="microphone" />
-					<CreateIcon type="image" icon="image" />
-					<CreateIcon type="video" icon="video" />
-				</div>
 			</div>
 		</div>
 	);
