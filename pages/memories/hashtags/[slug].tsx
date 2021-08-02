@@ -1,10 +1,9 @@
+import * as React from 'react';
 import { HeadMoments } from 'components/head-moments';
 import { Icon } from 'components/icon';
 import { Layout } from 'components/layout/layout';
 import { Title } from 'components/typography';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import * as React from 'react';
 import { ListMoments } from 'components/list-moments';
 import { useMomentsByTag } from 'hooks/api';
 import { EmptyState } from 'components/empty-state';
@@ -21,11 +20,11 @@ const MemoriesByHashtag: React.FC = () => {
 			<HeadMoments
 				leftContent={
 					<div className="flex items-center">
-						<Link href="/memories/hashtags">
+						<div onClick={() => router.back()}>
 							<div className="cursor-pointer">
 								<Icon src="/images/icons/back-arrow.svg" />
 							</div>
-						</Link>
+						</div>
 						<Title type="2" className="ml-4">
 							<Trans>Memories</Trans>
 						</Title>

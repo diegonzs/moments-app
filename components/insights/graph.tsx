@@ -8,18 +8,26 @@ interface GraphProps {
 }
 
 export const Graph: React.FC<GraphProps> = ({ moments }) => {
-	const data = React.useMemo(() => {
+	const [data, maxCount] = React.useMemo(() => {
 		const mydata: Record<number, number> = {};
 		moments.forEach((elem) => {
 			const day = momentjs(elem.created_at).weekday();
 			mydata[day] = mydata[day] ? mydata[day] + 1 : 1;
 		});
-		return Object.entries(mydata).map(([label, value]) => ({ label, value }));
+		const record = Object.entries(mydata).map(([label, value]) => ({
+			label,
+			value,
+		}));
+		const max = Object.values(mydata).reduce((acum, current) => {
+			if (current > acum) return current;
+			return acum;
+		}, 0);
+		return [record, max];
 	}, [moments]);
 
 	return (
 		<div className="flex flex-col m-5 mt-8">
-			<Subtitle type="2" className="text-primary-60 mb-3">
+			<Subtitle type="2" className="text-pimary-60 mb-7">
 				Moments by day
 			</Subtitle>
 			<ul className="h-40 flex items-end justify-between">
@@ -32,7 +40,7 @@ export const Graph: React.FC<GraphProps> = ({ moments }) => {
 						>
 							<div
 								style={{
-									height: `${(elem.value * 100) / moments.length + 10}%`,
+									height: `${(elem.value * 100) / maxCount + 5}%`,
 								}}
 								className="absolute bottom-0 w-full border-t border-primary bg-gradient-to-b from-graph-from to-graph-to"
 							>

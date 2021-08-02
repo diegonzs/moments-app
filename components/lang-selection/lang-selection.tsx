@@ -29,7 +29,7 @@ export const LangSelection: React.FC<LangSelectionProps> = ({ hideModal }) => {
 	return (
 		<div
 			className={clsx(
-				'absolute top-0 right-0 left-0 overflow-y-auto grid content-start p-5 pt-8 w-full h-full bg-background',
+				'absolute top-0 right-0 left-0 overflow-y-auto grid content-start w-full h-full bg-background',
 				theme
 			)}
 		>

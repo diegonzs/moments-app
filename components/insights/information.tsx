@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Trans } from '@lingui/macro';
 import { Caption, Subtitle } from 'components/typography';
+import Link from 'next/link';
 
 interface InformationProps {
 	moments: number;
@@ -34,15 +35,17 @@ export const Information: React.FC<InformationProps> = ({ moments, tags }) => {
 			</div>
 			<div className="mt-6 flex flex-col">
 				<Subtitle type="1" className="mb-4 text-primary-60">
-					<Trans>Most used hastags</Trans>
+					<Trans>Most used hashtags</Trans>
 				</Subtitle>
 				<ul className="grid gap-3">
-					{tags.map((elem, index) => (
-						<li key={elem}>
-							<Subtitle type="1" className="text-primary">
-								{index + 1}. #{elem}
-							</Subtitle>
-						</li>
+					{tags.slice(0, 5).map((elem, index) => (
+						<Link href={`/memories/hashtags/${elem}`} key={elem}>
+							<li className="cursor-pointer">
+								<Subtitle type="1" className="text-primary">
+									{index + 1}. #{elem}
+								</Subtitle>
+							</li>
+						</Link>
 					))}
 				</ul>
 			</div>
