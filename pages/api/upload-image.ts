@@ -26,7 +26,7 @@ const endpoint = async (req: NextApiRequest, res: NextApiResponse) => {
 
 	try {
 		const uploadedImage = await cloudinary.uploader.upload(data.file.path, {
-			width: 500,
+			width: 600,
 			crop: 'limit',
 		});
 		res.statusCode = 200;
