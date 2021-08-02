@@ -93,12 +93,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 									name="viewport"
 									content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
 								/>
-								{/* <script
-									id="onesignal-script"
-									src="https://cdn.onesignal.com/sdks/OneSignalSDK.js"
-									onLoad={() => setIsOnesignalReady(true)}
-									async
-								></script> */}
 							</Head>
 							<div>
 								<Component {...pageProps} />

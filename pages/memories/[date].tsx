@@ -15,6 +15,9 @@ const MemoriesByDate: React.FC = () => {
 	const router = useRouter();
 	const { date } = router.query;
 	const { moments, isLoading } = useMomentsByDate(date as string);
+	React.useEffect(() => {
+		console.log(date);
+	}, [date]);
 	return (
 		<Layout className="bg-background" withNavBar={false}>
 			<HeadMoments
@@ -30,7 +33,9 @@ const MemoriesByDate: React.FC = () => {
 						</Title>
 					</div>
 				}
-				rightContent={moment(date).format('Do MMM')}
+				rightContent={moment(date, ['MM-DD-YYYY', 'DD-MM-YYYY']).format(
+					'Do MMM'
+				)}
 			/>
 			{isLoading && <Loader />}
 			{moments && !!moments.length && <ListMoments moments={moments} />}

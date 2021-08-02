@@ -87,8 +87,13 @@ export const useMomentsByDate = (date: string) => {
 	const user = useUser();
 	const token = user?.token;
 
-	const startOfDay = moment(date).startOf('day').format();
-	const endOfDay = moment(date).endOf('day').format();
+	const startOfDay = moment(date, ['MM-DD-YYYY', 'DD-MM-YYYY'])
+		.startOf('day')
+		.format();
+	const endOfDay = moment(date, ['MM-DD-YYYY', 'DD-MM-YYYY'])
+		.endOf('day')
+		.format();
+	console.log({ startOfDay, endOfDay, date });
 	const { data, error, mutate } = useSWR<{ moments: Moment[] }, string>(
 		[GET_MOMENTS_BY_DATE, token, startOfDay, endOfDay],
 		(query, jwt, startOfDate, endOfDate) =>

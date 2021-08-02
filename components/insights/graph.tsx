@@ -12,10 +12,8 @@ export const Graph: React.FC<GraphProps> = ({ moments }) => {
 		const mydata: Record<number, number> = {};
 		moments.forEach((elem) => {
 			const day = momentjs(elem.created_at).weekday();
-			console.log(day);
 			mydata[day] = mydata[day] ? mydata[day] + 1 : 1;
 		});
-		console.log(mydata);
 		return Object.entries(mydata).map(([label, value]) => ({ label, value }));
 	}, [moments]);
 

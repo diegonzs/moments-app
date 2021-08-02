@@ -1,7 +1,7 @@
 import * as React from 'react';
 import moment from 'moment';
 import { EmptyState } from 'components/empty-state';
-import { MainCard, SecondaryCard } from 'components/insights';
+import { MainCard, SecondaryCard } from 'components/insightsv3';
 import { Layout } from 'components/layout/layout';
 import { NavBar } from 'components/nav-bar';
 import { Subtitle, Title } from 'components/typography';

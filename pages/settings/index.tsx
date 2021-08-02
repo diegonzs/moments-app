@@ -6,7 +6,7 @@ import { Trans, t } from '@lingui/macro';
 import { firebaseClient } from 'lib';
 import { Alert } from 'components/alert';
 import { Toggle } from 'components/forms';
-import { SecondaryCard } from 'components/insights';
+import { SecondaryCard } from 'components/insightsv3';
 import { Layout } from 'components/layout/layout';
 import { Subtitle, Title } from 'components/typography';
 import { useModal } from 'hooks/use-modal';

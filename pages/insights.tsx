@@ -10,9 +10,10 @@ import {
 	Information,
 	TableData,
 	TitleSection,
-} from 'components/insightsv2';
+} from 'components/insights';
 
 const InsightsPage = () => {
+	const [isMenuOpen] = React.useState(false);
 	const { insights, isLoading } = useMomentsByInsights();
 
 	const words = React.useMemo(() => {
@@ -74,6 +75,7 @@ const InsightsPage = () => {
 				</div>
 			)}
 			<NavBar />
+			{isMenuOpen && <div></div>}
 		</Layout>
 	);
 };

@@ -6,12 +6,19 @@ import Content from './content/content';
 
 import { DraggableCore } from 'react-draggable';
 
-export const DetailMoment: React.FC = () => {
+export const DetailMoment: React.FC<{ allowTop?: boolean }> = ({
+	children,
+	allowTop = true,
+}) => {
 	const { currentMoment, setCurrentMoment } = useCurrentMoment();
 	const [currentPosition, setCurrenPosition] = React.useState(0);
 	const [vh, setVh] = React.useState(0);
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [isOnTop, setIsOnTop] = React.useState(false);
+
+	React.useEffect(() => {
+		console.log(allowTop);
+	}, []);
 
 	React.useEffect(() => {
 		if (currentMoment) {
@@ -91,9 +98,10 @@ export const DetailMoment: React.FC = () => {
 	};
 
 	const resize = (): void => {
+		console.log('doing resize!!!');
 		const newVh = window.innerHeight * 0.01;
 		setVh(newVh);
-		document.documentElement.style.setProperty('--vh', `${newVh}px`);
+		document.documentElement.style.setProperty('--vh', `${newVh}`);
 	};
 
 	React.useEffect(() => {
@@ -108,7 +116,7 @@ export const DetailMoment: React.FC = () => {
 		return () => {
 			window.removeEventListener('resize', () => resize());
 		};
-	}, [resize]);
+	}, []);
 
 	const controlEvent = (deltaY: number): void => {
 		if (deltaY) {
@@ -172,7 +180,12 @@ export const DetailMoment: React.FC = () => {
 						`${isOpen ? styles.exampleContainerOpen : ''}`
 					)}
 				>
-					<Content closeBottomSheet={closeBottomSheet} />
+					{children || <Content closeBottomSheet={closeBottomSheet} />}
+					{/* {children ? (
+						children
+					) : (
+						<Content closeBottomSheet={closeBottomSheet} />
+					)} */}
 				</div>
 			</DraggableCore>
 		</>
