@@ -82,6 +82,7 @@ const InsightsPage = () => {
 			<BottomSheet
 				shouldOpen={isMenuOpen}
 				onCloseCallback={() => setIsMenuOpen(false)}
+				allowTop={false}
 			>
 				{() => (
 					<div className="flex flex-col px-5 py-12">
