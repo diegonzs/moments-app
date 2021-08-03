@@ -19,6 +19,7 @@ import { Loader } from 'components/create-moment/loader';
 import { defaultLocale, dynamicActiveLocale } from 'lib/i18n';
 
 import 'styles/global-tailwind.css';
+import { BottomSheet } from 'components/bottom-sheet';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
@@ -96,7 +97,12 @@ function MyApp({ Component, pageProps }: AppProps) {
 							</Head>
 							<div>
 								<Component {...pageProps} />
-								<DetailMoment />
+								<BottomSheet
+									shouldOpen={!!currentMoment}
+									onCloseCallback={() => setCurrentMoment(null)}
+								>
+									{({ onClose }) => <DetailMoment closeBottomSheet={onClose} />}
+								</BottomSheet>
 								{isCreatingMoment && <Loader />}
 							</div>
 						</CurrentMomentContext.Provider>

@@ -11,9 +11,13 @@ import {
 	TableData,
 	TitleSection,
 } from 'components/insights';
+import { BottomSheet } from 'components/bottom-sheet';
+import { BodyText, Subtitle, Title } from 'components/typography';
+import { Trans } from '@lingui/macro';
+import { ChevronDownIcon } from '@heroicons/react/outline';
 
 const InsightsPage = () => {
-	const [isMenuOpen] = React.useState(false);
+	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 	const { insights, isLoading } = useMomentsByInsights();
 
 	const words = React.useMemo(() => {
@@ -61,7 +65,7 @@ const InsightsPage = () => {
 				<Loader />
 			) : (
 				<div>
-					<TitleSection />
+					<TitleSection onClickMenu={() => setIsMenuOpen(true)} />
 					<TableData
 						total={insights?.moments.length || 0}
 						images={images}
@@ -75,8 +79,39 @@ const InsightsPage = () => {
 				</div>
 			)}
 			<NavBar />
-			{isMenuOpen && <div></div>}
+			<BottomSheet
+				shouldOpen={isMenuOpen}
+				onCloseCallback={() => setIsMenuOpen(false)}
+			>
+				{() => (
+					<div className="flex flex-col px-5 py-12">
+						<Title type="2" className="text-primary text-left mb-6">
+							<Trans>Date</Trans>
+						</Title>
+						<div className="grid gap-4">
+							<Dropdown />
+							<Dropdown />
+						</div>
+					</div>
+				)}
+			</BottomSheet>
 		</Layout>
+	);
+};
+
+const Dropdown = () => {
+	return (
+		<div className="flex justify-between items-center bg-background-input h-16 px-6 rounded-2xl cursor-pointer">
+			<div className="flex flex-col">
+				<Subtitle type="2" className="text-primary-40 text-left">
+					Type
+				</Subtitle>
+				<BodyText type="3" className="text-primary text-left">
+					Last Days
+				</BodyText>
+			</div>
+			<ChevronDownIcon className="w-6" />
+		</div>
 	);
 };
 
