@@ -3,19 +3,19 @@ import { useMoments } from 'hooks/api';
 import { NavBar } from 'components/nav-bar';
 import moment from 'moment';
 import clsx from 'clsx';
-import styles from 'styles/pages/home.module.scss';
 import { ListMoments } from 'components/list-moments';
 import { HeadMoments } from 'components/head-moments';
 import { EmptyState } from 'components/empty-state';
 import { GetServerSideProps } from 'next';
 import { Loader } from 'components/loader';
-import { useIsCreatingMoment } from 'hooks';
+import { useBackgroundPage, useIsCreatingMoment } from 'hooks';
 import { Trans } from '@lingui/macro';
 
 const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 	hasSession = false,
 	isAuth = false,
 }) => {
+	useBackgroundPage('bg-background');
 	const { isCreatingMoment } = useIsCreatingMoment();
 	const { moments, isLoading, isError, mutate } = useMoments({
 		revalidateOnMount: false,
@@ -30,8 +30,7 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 	return (
 		<div
 			className={clsx(
-				'relative grid pb-32 w-full min-h-screen bg-background',
-				styles.homeContainer
+				'relative flex flex-col flex-grow w-full h-full bg-background justify-between pb-24'
 			)}
 		>
 			<HeadMoments
@@ -45,12 +44,14 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 			/>
 			{(isLoading || (hasSession && !isAuth && !moments)) && <Loader />}
 			{!!moments && !isError && !moments.length && (
-				<EmptyState
-					ilustration="/images/svgs/empty-state.svg"
-					darkIlustration="/images/svgs/dark/empty-state-home-dark.svg"
-					ilustrationSize="269"
-					description={<Trans>Start journaling today’s moments</Trans>}
-				/>
+				<div className="flex-grow flex items-center">
+					<EmptyState
+						ilustration="/images/svgs/empty-state.svg"
+						darkIlustration="/images/svgs/dark/empty-state-home-dark.svg"
+						ilustrationSize="269"
+						description={<Trans>Start journaling today’s moments</Trans>}
+					/>
+				</div>
 			)}
 			{!!moments && !!moments.length && <ListMoments moments={moments} />}
 			<NavBar />

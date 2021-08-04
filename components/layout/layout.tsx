@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { useBackgroundPage } from 'hooks';
 import * as React from 'react';
 
 interface LayoutProps {
@@ -11,13 +12,14 @@ export const Layout: React.FC<LayoutProps> = ({
 	withNavBar = true,
 	children,
 }) => {
+	useBackgroundPage(className);
 	return (
 		<div
-			style={{ gridTemplateRows: 'auto 1fr' }}
+			// style={{ gridTemplateRows: 'auto 1fr' }}
 			className={clsx(
-				'relative grid w-full min-h-screen',
-				{ 'pb-32': withNavBar },
-				{ 'pb-6': !withNavBar },
+				'relative flex flex-col flex-grow h-full w-full',
+				{ 'pb-20': withNavBar },
+				{ 'pb-10': !withNavBar },
 				className
 			)}
 		>

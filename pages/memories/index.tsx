@@ -1,6 +1,6 @@
 import * as React from 'react';
 import momentjs from 'moment';
-import { Title } from 'components/typography';
+import { Subtitle, Title } from 'components/typography';
 import { Icon } from 'components/icon';
 import { EmptyState } from 'components/empty-state';
 import { NavBar } from 'components/nav-bar';
@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useMemories } from 'hooks/api';
 import { Loader } from 'components/loader';
 import { t, Trans } from '@lingui/macro';
+import { DocumentDownloadIcon } from '@heroicons/react/outline';
 // import { GetServerSideProps } from 'next';
 
 const Memories: React.FC = () => {
@@ -80,10 +81,27 @@ const Memories: React.FC = () => {
 					{memories.map((memory) => (
 						<CardMemory key={memory.date} {...memory} />
 					))}
+					<LoadMoreCardMemory />
 				</ul>
 			)}
 			<NavBar />
 		</Layout>
+	);
+};
+
+export const LoadMoreCardMemory = () => {
+	return (
+		<div
+			className="flex flex-col justify-between px-6 py-5 bg-primary-10 cursor-pointer border-4 border-dashed border-primary-20"
+			style={{ borderRadius: 20 }}
+		>
+			<DocumentDownloadIcon className="w-6 mb-4" />
+			<Subtitle type="1">
+				<Trans>
+					Load More <br /> Memories
+				</Trans>
+			</Subtitle>
+		</div>
 	);
 };
 

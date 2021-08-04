@@ -18,11 +18,14 @@ import { Loader } from 'components/create-moment/loader';
 
 import { defaultLocale, dynamicActiveLocale } from 'lib/i18n';
 
-import 'styles/global-tailwind.css';
 import { BottomSheet } from 'components/bottom-sheet';
+import { useWindowSize } from 'hooks/use-window-size';
+
+import 'styles/global-tailwind.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
+	const { height } = useWindowSize();
 	const [currentMoment, setCurrentMoment] = React.useState<Moment | null>(null);
 	const [isCreatingMoment, setIsCreatingMoment] = React.useState<boolean>(
 		false
@@ -95,7 +98,16 @@ function MyApp({ Component, pageProps }: AppProps) {
 									content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
 								/>
 							</Head>
-							<div>
+							<div
+								style={{
+									minHeight: height ? `${height}px` : '100vh',
+									// paddingBottom: !router.pathname.includes('create')
+									// 	? '100px'
+									// 	: '0',
+									display: 'flex',
+									flexDirection: 'column',
+								}}
+							>
 								<Component {...pageProps} />
 								<BottomSheet
 									shouldOpen={!!currentMoment}

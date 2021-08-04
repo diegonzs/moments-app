@@ -144,9 +144,6 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 	return (
 		<>
 			<div className={clsx('flex flex-col items-center p-5 pt-3 w-full')}>
-				<div
-					className={clsx('rounded-lg, mb-8 px-6 h-2 bg-primary-20 rounded-lg')}
-				/>
 				{!!currentMoment?.images?.length && (
 					<div className="relative mb-5 w-full rounded-1.2lg overflow-hidden">
 						<Image

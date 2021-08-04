@@ -40,7 +40,7 @@ const Auth: React.FC = () => {
 	}, [user]);
 
 	return (
-		<div className="grid pb-8 px-8 w-full h-full min-h-screen bg-background">
+		<div className="grid pb-8 px-8 w-full h-full bg-background">
 			<div className="absolute right-0 top-0">
 				<SVG
 					src={

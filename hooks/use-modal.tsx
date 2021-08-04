@@ -1,8 +1,10 @@
 import { useCallback, useState, Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
+import { useWindowSize } from './use-window-size';
 
 export const useModal = () => {
 	const [isShow, setIsShow] = useState(false);
+	const { height } = useWindowSize();
 	const cancelButtonRef = useRef<HTMLDivElement>(null);
 	const hide = () => {
 		setIsShow(false);
@@ -22,7 +24,10 @@ export const useModal = () => {
 					initialFocus={cancelButtonRef}
 					onClose={hide}
 				>
-					<div className="flex items-center justify-center px-4 min-h-screen text-center sm:p-0">
+					<div
+						style={{ minHeight: `${height}px` }}
+						className="flex items-center justify-center px-4 text-center sm:p-0"
+					>
 						<Transition.Child
 							as="div"
 							enter="ease-out duration-300"

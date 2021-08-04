@@ -20,7 +20,7 @@ import {
 import { useUser } from 'hooks/user/useUser';
 import { GetServerSideProps } from 'next';
 import { useIndexes, useMoments, useProcesses, useTags } from 'hooks/api';
-import { useIsCreatingMoment } from 'hooks';
+import { useBackgroundPage, useIsCreatingMoment } from 'hooks';
 import { Trans, t } from '@lingui/macro';
 import {
 	BookmarkIcon,
@@ -37,6 +37,7 @@ type ImageUploadType = {
 };
 
 const Create = () => {
+	useBackgroundPage('bg-background-nav');
 	const router = useRouter();
 	const { type } = router.query;
 	const { height } = useWindowSize();

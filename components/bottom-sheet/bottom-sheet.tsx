@@ -98,7 +98,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 	const checkTopOrClose = (): void => {
 		if (currentPosition < vh * 100 * 0.3) {
 			closeBottomSheet();
-		} else if (currentPosition > vh * 100 * 0.7) {
+		} else if (currentPosition > vh * 100 * 0.7 && allowTop) {
 			moveToTop();
 		} else {
 			moveToMiddle();
@@ -143,7 +143,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 	const onDragElement = (delta: number): void => {
 		const newPosition = currentPosition - delta;
 		if (delta < 0) {
-			if (currentPosition < vh * 100 && !isOnTop && allowTop) {
+			if (currentPosition < vh * 100 && !isOnTop) {
 				moveElement(newPosition, vh);
 				setCurrenPosition(newPosition);
 			}
@@ -187,6 +187,9 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 						bgColor ? bgColor : 'bg-background'
 					)}
 				>
+					<div className="flex justify-center w-full mt-3 mb-8">
+						<div className={clsx('w-12 h-2 bg-primary-20 rounded-lg z-30')} />
+					</div>
 					{children({ onClose: closeBottomSheet })}
 				</div>
 			</DraggableCore>

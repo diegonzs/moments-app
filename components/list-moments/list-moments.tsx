@@ -29,23 +29,25 @@ const ElemMoment: React.FC<ElemMoment> = ({ moment, isRight }) => {
 
 export const ListMoments: React.FC<ListMomentsProps> = ({ moments }) => {
 	return (
-		<div
-			className="relative flex flex-col items-center self-end justify-end mt-11 pt-10 w-full"
-			style={{ height: 'min-content' }}
-		>
-			<Rocket />
-			<ul
-				className="flex flex-col-reverse justify-end pb-12"
-				style={{ width: '94vw', maxWidth: '24rem' }}
+		<div className="self-end w-full flex-grow flex justify-center">
+			<div
+				className="relative flex flex-col flex-grow items-center self-end justify-end mt-11 pt-10 w-full"
+				style={{ height: 'min-content' }}
 			>
-				{moments.map((moment, index) => (
-					<ElemMoment
-						key={moment.id}
-						moment={moment}
-						isRight={index % 2 === 0}
-					/>
-				))}
-			</ul>
+				<Rocket />
+				<ul
+					className="flex flex-col-reverse justify-end pb-12"
+					style={{ width: '94vw', maxWidth: '24rem' }}
+				>
+					{moments.map((moment, index) => (
+						<ElemMoment
+							key={moment.id}
+							moment={moment}
+							isRight={index % 2 === 0}
+						/>
+					))}
+				</ul>
+			</div>
 		</div>
 	);
 };

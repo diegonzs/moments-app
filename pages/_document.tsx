@@ -168,7 +168,7 @@ class MyDocument extends Document {
 					/>
 					<ReactOneSignal />
 				</Head>
-				<body>
+				<body className="bg-background">
 					<Main />
 					<NextScript />
 				</body>

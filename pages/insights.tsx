@@ -85,7 +85,7 @@ const InsightsPage = () => {
 				allowTop={false}
 			>
 				{() => (
-					<div className="flex flex-col px-5 py-12">
+					<div className="flex flex-col px-5">
 						<Title type="2" className="text-primary text-left mb-6">
 							<Trans>Date</Trans>
 						</Title>

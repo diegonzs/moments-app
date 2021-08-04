@@ -33,3 +33,16 @@ export const useIsCreatingMoment = () => {
 export const useOnesignal = () => {
 	return React.useContext(OnesignalContext);
 };
+
+export const useBackgroundPage = (className: string) => {
+	React.useEffect(() => {
+		console.log('this is real');
+		const changeBackground = () => {
+			document.getElementsByTagName('body')[0].classList.add(className);
+		};
+		changeBackground();
+		return () => {
+			document.getElementsByTagName('body')[0].classList.remove(className);
+		};
+	}, []);
+};
