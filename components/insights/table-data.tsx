@@ -27,7 +27,7 @@ export const TableData: React.FC<TableDataProps> = ({
 				</Subtitle>
 				<Subtitle type="3">Last 7 days</Subtitle>
 			</div>
-			<div className="bg-background-nav py-4 px-5 grid grid-cols-3 gap-4">
+			<div className="bg-background-nav py-4 px-5 grid grid-cols-3 gap-4 rounded-2.5xl">
 				<InfoContent title="Moments" value={`${total}`} />
 				<InfoContent title="hashtags" value={`${tags}`} />
 				<InfoContent title="Words" value={`${words}`} />
