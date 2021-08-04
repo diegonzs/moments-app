@@ -64,7 +64,7 @@ const InsightsPage = () => {
 			{isLoading || !insights ? (
 				<Loader />
 			) : (
-				<div>
+				<div className="pb-5">
 					<TitleSection onClickMenu={() => setIsMenuOpen(true)} />
 					<TableData
 						total={insights?.moments.length || 0}

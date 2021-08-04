@@ -21,7 +21,7 @@ class MyDocument extends Document {
 					<meta name="application-name" content="Moments" />
 					<meta
 						name="apple-mobile-web-app-status-bar-style"
-						content="default"
+						content="black-translucent"
 					/>
 					<meta name="apple-mobile-web-app-title" content="Moments" />
 					<meta name="description" content="Modern journaling" />

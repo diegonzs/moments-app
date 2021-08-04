@@ -61,7 +61,7 @@ export const NavBar: React.FC = () => {
 	return (
 		<div
 			className={clsx(
-				'fixed bottom-0 h-20 left-0 flex flex-col px-8 w-full bg-background-nav rounded-t-3xl transform transition-transform duration-300'
+				'fixed bottom-0 py-2 pb-6 left-0 flex flex-col px-8 w-full bg-background-nav rounded-t-3xl transform transition-transform duration-300'
 				// { '-translate-y-32': isOpen }
 			)}
 		>

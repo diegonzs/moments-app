@@ -5,6 +5,7 @@ import {
 	ModalMediaContext,
 } from 'context';
 import { OnesignalContext } from 'context/onesignal';
+import { useTheme } from 'next-themes';
 
 export const useCurrentMoment = () => {
 	const { currentMoment, setCurrentMoment } = React.useContext(
@@ -34,15 +35,35 @@ export const useOnesignal = () => {
 	return React.useContext(OnesignalContext);
 };
 
+const backgroundColors: Record<string, Record<string, string>> = {
+	light: {
+		'bg-background': '#fff7ed',
+		'bg-background-nav': '#ffffff',
+	},
+	dark: {
+		'bg-background': '#201c19',
+		'bg-background-nav': '#3c3028',
+	},
+};
+
 export const useBackgroundPage = (className: string) => {
+	const { theme } = useTheme();
 	React.useEffect(() => {
-		console.log('this is real');
 		const changeBackground = () => {
 			document.getElementsByTagName('body')[0].classList.add(className);
+			const scheme = document.querySelector('meta[name="theme-color"]');
+			if (theme) {
+				const color = backgroundColors[theme]?.[className];
+				console.log(className);
+				console.log('we are going to change the color and use this', color);
+				if (color) {
+					scheme?.setAttribute('content', color);
+				}
+			}
 		};
 		changeBackground();
 		return () => {
 			document.getElementsByTagName('body')[0].classList.remove(className);
 		};
-	}, []);
+	}, [theme]);
 };
