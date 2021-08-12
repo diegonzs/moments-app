@@ -9,6 +9,7 @@ interface TableDataProps {
 	videos: number;
 	audios: number;
 	tags: number;
+	label: string;
 }
 
 export const TableData: React.FC<TableDataProps> = ({
@@ -18,6 +19,7 @@ export const TableData: React.FC<TableDataProps> = ({
 	videos,
 	audios,
 	tags,
+	label,
 }) => {
 	return (
 		<div className="flex flex-col mx-5 mt-8">
@@ -25,7 +27,7 @@ export const TableData: React.FC<TableDataProps> = ({
 				<Subtitle type="2" className="text-primary-60">
 					<Trans>Tracked moments</Trans>
 				</Subtitle>
-				<Subtitle type="3">Last 7 days</Subtitle>
+				<Subtitle type="3">{label}</Subtitle>
 			</div>
 			<div className="bg-background-nav py-4 px-5 grid grid-cols-3 gap-4 rounded-2.5xl">
 				<InfoContent title="Moments" value={`${total}`} />

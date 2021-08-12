@@ -26,7 +26,7 @@ export const useModal = () => {
 				>
 					<div
 						style={{ minHeight: `${height}px` }}
-						className="flex items-center justify-center px-4 text-center sm:p-0"
+						className="flex items-center justify-center px-4 text-center sm:p-0 h-full"
 					>
 						<Transition.Child
 							as="div"

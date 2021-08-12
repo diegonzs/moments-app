@@ -13,6 +13,7 @@ import {
 import { useUser } from 'hooks/user/useUser';
 import moment from 'moment';
 import { Moments, Tags } from 'types/schema-types';
+import React from 'react';
 
 export const useMoments = (config?: ConfigInterface) => {
 	const user = useUser();
@@ -217,22 +218,51 @@ export const useMomentsByTimeAndPeriod = (time: string, period: string) => {
 	};
 };
 
-export const useMomentsByInsights = () => {
+export const useMomentsByInsights = (time: string, period: string) => {
 	const user = useUser();
 	const token = user?.token;
+	console.log({ time, period });
 
-	const endDateOfToday = moment().endOf('day').format();
+	const { startDate, endDate } = React.useMemo(() => {
+		let currentStartDate = '';
+		let currentEndDate = '';
+		if (time === 'last days') {
+			if (period === '7 days') {
+				currentStartDate = moment().endOf('day').format();
+				currentEndDate = moment().endOf('day').subtract(7, 'days').format();
+			} else if (period === '30 days') {
+				currentStartDate = moment().endOf('day').format();
+				currentEndDate = moment().endOf('day').subtract(30, 'days').format();
+			}
+		} else if (time === 'weekly') {
+			currentStartDate = moment().week(Number(period)).startOf('week').format();
+			currentEndDate = moment().week(Number(period)).endOf('week').format();
+		} else if (time === 'monthly') {
+			currentStartDate = moment()
+				.month(Number(period))
+				.startOf('month')
+				.format();
+			currentEndDate = moment().month(Number(period)).endOf('month').format();
+		} else if (time === 'yearly') {
+			currentStartDate = moment().year(Number(period)).startOf('year').format();
+			currentEndDate = moment().year(Number(period)).endOf('year').format();
+		}
+		return {
+			startDate: currentStartDate,
+			endDate: currentEndDate,
+		};
+	}, [time, period]);
 
 	const { data, error, mutate } = useSWR<
 		{ moments: Moments[]; tags: Tags[] },
 		string
-	>([GET_INSIGHTS_MOMENTS, token], (query, jwt) =>
+	>([GET_INSIGHTS_MOMENTS, token, startDate, endDate], (query, jwt) =>
 		fetcherGraph<
 			{ moments: Moments[]; tags: Tags[] },
 			{ startDate: string; endDate: string }
 		>(query, jwt, {
-			startDate: endDateOfToday,
-			endDate: moment().subtract(60, 'days').startOf('day').format(),
+			startDate,
+			endDate,
 		})
 	);
 

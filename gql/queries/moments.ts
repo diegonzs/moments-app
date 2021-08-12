@@ -119,7 +119,7 @@ export const GET_INSIGHTS_MOMENTS = gql`
 	query GET_INSIGHTS_MOMENTS($startDate: timestamptz, $endDate: timestamptz) {
 		moments(
 			order_by: { created_at: desc }
-			where: { created_at: { _gt: $endDate, _lt: $startDate } }
+			where: { created_at: { _gt: $startDate, _lt: $endDate } }
 		) {
 			id
 			content
@@ -129,7 +129,7 @@ export const GET_INSIGHTS_MOMENTS = gql`
 		tags(
 			where: {
 				tag_moments: {
-					moment: { created_at: { _gt: $endDate, _lt: $startDate } }
+					moment: { created_at: { _gt: $startDate, _lt: $endDate } }
 				}
 			}
 		) {

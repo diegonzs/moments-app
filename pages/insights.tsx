@@ -15,10 +15,23 @@ import { BottomSheet } from 'components/bottom-sheet';
 import { BodyText, Subtitle, Title } from 'components/typography';
 import { Trans } from '@lingui/macro';
 import { ChevronDownIcon } from '@heroicons/react/outline';
+import { getMonths, getWeeks, PeriodData, timeTypes } from 'lib/date-utils';
+import { useModal } from 'hooks/use-modal';
 
 const InsightsPage = () => {
 	const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-	const { insights, isLoading } = useMomentsByInsights();
+	const [dateType, setDateType] = React.useState<PeriodData | null>(
+		timeTypes[0]
+	);
+	const [datePeriod, setDatePeriod] = React.useState<PeriodData | null>({
+		label: '7 days',
+		value: '7 days',
+	});
+
+	const { insights, isLoading } = useMomentsByInsights(
+		dateType?.value || '',
+		datePeriod?.value || ''
+	);
 
 	const words = React.useMemo(() => {
 		if (insights && insights.moments.length) {
@@ -59,6 +72,41 @@ const InsightsPage = () => {
 		return value;
 	}, [insights]);
 
+	const periodOptions = React.useMemo(() => {
+		if (dateType) {
+			if (dateType.value === 'weekly') {
+				return getWeeks();
+			} else if (dateType.value === 'monthly') {
+				return getMonths();
+			} else if (dateType.value === 'last days') {
+				return [
+					{ label: '7 days', value: '7 days' },
+					{ label: '30 days', value: '30 days' },
+				];
+			} else if (dateType.value === 'yearly') {
+				return [{ label: '2021', value: '2021' }];
+			}
+		}
+		return [];
+	}, [dateType]);
+
+	const changeType = (value: string) => {
+		const newType = timeTypes.find((elem) => elem.value === value);
+		if (newType) {
+			setDateType(newType);
+			setDatePeriod(null);
+		}
+	};
+
+	const changePeriod = (value: string) => {
+		const currentPeriodOption = periodOptions.find(
+			(elem) => elem.value === value
+		);
+		if (currentPeriodOption) {
+			setDatePeriod(currentPeriodOption);
+		}
+	};
+
 	return (
 		<Layout className="bg-background">
 			{isLoading || !insights ? (
@@ -67,6 +115,7 @@ const InsightsPage = () => {
 				<div className="pb-5">
 					<TitleSection onClickMenu={() => setIsMenuOpen(true)} />
 					<TableData
+						label={datePeriod?.label || ''}
 						total={insights?.moments.length || 0}
 						images={images}
 						words={words}
@@ -74,7 +123,11 @@ const InsightsPage = () => {
 						videos={videos}
 						tags={tags.length}
 					/>
-					<Graph moments={insights.moments} />
+					<Graph
+						moments={insights.moments}
+						time={dateType?.value || ''}
+						period={datePeriod?.value || ''}
+					/>
 					<Information tags={tags} moments={insights?.moments.length || 0} />
 				</div>
 			)}
@@ -90,8 +143,21 @@ const InsightsPage = () => {
 							<Trans>Date</Trans>
 						</Title>
 						<div className="grid gap-4">
-							<Dropdown />
-							<Dropdown />
+							<Dropdown
+								options={timeTypes}
+								onChange={changeType}
+								placeholder="Select a type"
+								label="Type"
+								currentOption={dateType}
+							/>
+							<Dropdown
+								options={periodOptions}
+								disabled={!dateType}
+								onChange={changePeriod}
+								placeholder="Select a period"
+								label="Period"
+								currentOption={datePeriod}
+							/>
 						</div>
 					</div>
 				)}
@@ -100,18 +166,61 @@ const InsightsPage = () => {
 	);
 };
 
-const Dropdown = () => {
+const Dropdown: React.FC<{
+	options: PeriodData[];
+	currentOption: PeriodData | null;
+	disabled?: boolean;
+	label: string;
+	placeholder: string;
+	onChange: (value: string) => void;
+}> = ({
+	options,
+	currentOption,
+	label,
+	placeholder,
+	disabled = false,
+	onChange,
+}) => {
+	const { Modal, isShow, hide, show } = useModal();
 	return (
-		<div className="flex justify-between items-center bg-background-input h-16 px-6 rounded-2xl cursor-pointer">
-			<div className="flex flex-col">
-				<Subtitle type="2" className="text-primary-40 text-left">
-					Type
-				</Subtitle>
-				<BodyText type="3" className="text-primary text-left">
-					Last Days
-				</BodyText>
+		<div className="relative h-16 rounded-2xl overflow-hidden">
+			<div
+				className="flex justify-between items-center bg-background-input px-6 cursor-pointer h-full"
+				onClick={() => (!disabled ? show() : null)}
+				onTouchStart={() => (!disabled ? show() : null)}
+			>
+				<div className="flex flex-col">
+					<Subtitle type="2" className="text-primary-40 text-left">
+						{label}
+					</Subtitle>
+					<BodyText type="3" className="text-primary text-left">
+						{currentOption ? currentOption.label : placeholder}
+					</BodyText>
+				</div>
+				<ChevronDownIcon className="w-6" />
 			</div>
-			<ChevronDownIcon className="w-6" />
+			<Modal isShow={isShow}>
+				<div className="z-50 bg-background p-5 rounded-md h-[400px] w-[300px] overflow-y-scroll">
+					<Subtitle type="1" className="text-left mb-3">
+						{placeholder}
+					</Subtitle>
+					<div className="grid gap-2">
+						{options.map((elem) => (
+							<div
+								key={elem.label}
+								onClick={() => {
+									onChange(elem.value);
+									hide();
+								}}
+							>
+								<BodyText type="1" className="text-left cursor-pointer">
+									{elem.label}
+								</BodyText>
+							</div>
+						))}
+					</div>
+				</div>
+			</Modal>
 		</div>
 	);
 };
