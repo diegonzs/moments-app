@@ -124,6 +124,8 @@ export const GET_INSIGHTS_MOMENTS = gql`
 			id
 			content
 			images
+			videos
+			note_voices
 			created_at
 		}
 		tags(

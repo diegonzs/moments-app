@@ -35,7 +35,7 @@ export const TableData: React.FC<TableDataProps> = ({
 				<InfoContent title="Words" value={`${words}`} />
 				<InfoContent title="Images" value={`${images}`} />
 				<InfoContent title="Videos" value={`${videos}`} />
-				<InfoContent title="Images" value={`${audios}`} />
+				<InfoContent title="Audios" value={`${audios}`} />
 			</div>
 		</div>
 	);

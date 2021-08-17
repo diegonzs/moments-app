@@ -223,21 +223,19 @@ export const useMomentsByInsights = (time: string, period: string) => {
 	const token = user?.token;
 
 	const { startDate, endDate } = React.useMemo(() => {
-		console.log({ time, period });
 		let currentStartDate = '';
 		let currentEndDate = '';
 		if (time === 'last days') {
 			if (period === '7 days') {
 				currentEndDate = moment().endOf('day').format();
 				currentStartDate = moment().endOf('day').subtract(7, 'days').format();
-				console.log({ currentStartDate, currentEndDate });
 			} else if (period === '30 days') {
 				currentEndDate = moment().endOf('day').format();
 				currentStartDate = moment().endOf('day').subtract(30, 'days').format();
 			}
 		} else if (time === 'weekly') {
-			currentEndDate = moment().week(Number(period)).startOf('week').format();
-			currentStartDate = moment().week(Number(period)).endOf('week').format();
+			currentStartDate = moment().week(Number(period)).startOf('week').format();
+			currentEndDate = moment().week(Number(period)).endOf('week').format();
 		} else if (time === 'monthly') {
 			currentStartDate = moment()
 				.month(Number(period))

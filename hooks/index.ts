@@ -54,8 +54,6 @@ export const useBackgroundPage = (className: string) => {
 			const scheme = document.querySelector('meta[name="theme-color"]');
 			if (theme) {
 				const color = backgroundColors[theme]?.[className];
-				console.log(className);
-				console.log('we are going to change the color and use this', color);
 				if (color) {
 					scheme?.setAttribute('content', color);
 				}

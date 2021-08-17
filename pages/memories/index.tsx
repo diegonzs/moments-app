@@ -77,7 +77,7 @@ const Memories: React.FC = () => {
 				/>
 			)}
 			{!!memories?.length && (
-				<ul className="grid gap-3 grid-cols-2 content-start mt-8 px-5">
+				<ul className="grid gap-3 grid-cols-2 content-start mt-8 mb-3 px-5">
 					{memories.map((memory) => (
 						<CardMemory key={memory.date} {...memory} />
 					))}

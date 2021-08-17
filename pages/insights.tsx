@@ -65,7 +65,7 @@ const InsightsPage = () => {
 					value.videos = value.videos + elem.videos.length;
 				}
 				if (elem.note_voices) {
-					value.audios = value.audios + elem.note_voices;
+					value.audios = value.audios + elem.note_voices.length;
 				}
 			});
 		}
@@ -73,21 +73,23 @@ const InsightsPage = () => {
 	}, [insights]);
 
 	const periodOptions = React.useMemo(() => {
+		let periods: PeriodData[] = [];
 		if (dateType) {
 			if (dateType.value === 'weekly') {
-				return getWeeks();
+				periods = getWeeks();
 			} else if (dateType.value === 'monthly') {
-				return getMonths();
+				periods = getMonths();
 			} else if (dateType.value === 'last days') {
-				return [
+				periods = [
 					{ label: '7 days', value: '7 days' },
 					{ label: '30 days', value: '30 days' },
 				];
 			} else if (dateType.value === 'yearly') {
-				return [{ label: '2021', value: '2021' }];
+				periods = [{ label: '2021', value: '2021' }];
 			}
 		}
-		return [];
+		setDatePeriod(periods[0]);
+		return periods;
 	}, [dateType]);
 
 	const changeType = (value: string) => {
@@ -193,7 +195,7 @@ const Dropdown: React.FC<{
 					<Subtitle type="2" className="text-primary-40 text-left">
 						{label}
 					</Subtitle>
-					<BodyText type="3" className="text-primary text-left">
+					<BodyText type="1" className="text-primary text-left">
 						{currentOption ? currentOption.label : placeholder}
 					</BodyText>
 				</div>
