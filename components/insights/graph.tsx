@@ -65,7 +65,12 @@ export const Graph: React.FC<GraphProps> = ({ moments, time, period }) => {
 			<Subtitle type="2" className="text-pimary-60 mb-7">
 				Moments by day
 			</Subtitle>
-			<ul className="h-40 grid grid-flow-col gap-2 w-full overflow-x-scroll hide-scroll-bar pt-[23px]">
+			<ul
+				className={clsx(
+					'h-40 grid grid-flow-col gap-3 w-full overflow-x-scroll hide-scroll-bar pt-[23px]',
+					data.length <= 5 && 'justify-start'
+				)}
+			>
 				{data.map((elem) => (
 					<div key={elem.label} className="h-full flex flex-col items-center">
 						<li
