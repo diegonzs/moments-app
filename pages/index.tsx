@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useMoments } from 'hooks/api';
+import { useMoments, useMomentsByProcesses } from 'hooks/api';
 import { NavBar } from 'components/nav-bar';
 import moment from 'moment';
 import clsx from 'clsx';
@@ -8,8 +8,15 @@ import { HeadMoments } from 'components/head-moments';
 import { EmptyState } from 'components/empty-state';
 import { GetServerSideProps } from 'next';
 import { Loader } from 'components/loader';
-import { useBackgroundPage, useIsCreatingMoment } from 'hooks';
+import {
+	useActiveProcess,
+	useBackgroundPage,
+	useIsCreatingMoment,
+} from 'hooks';
 import { Trans } from '@lingui/macro';
+import Link from 'next/link';
+import { BookmarkIcon } from '@heroicons/react/outline';
+import { Moments } from 'types/schema-types';
 
 const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 	hasSession = false,
@@ -17,9 +24,35 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 }) => {
 	useBackgroundPage('bg-background');
 	const { isCreatingMoment } = useIsCreatingMoment();
-	const { moments, isLoading, isError, mutate } = useMoments({
+	const { activeProcess } = useActiveProcess();
+	const { moments: todaysMoments, isLoading, isError, mutate } = useMoments({
 		revalidateOnMount: false,
 	});
+
+	const { processes, isLoading: isLoadingProcesses } = useMomentsByProcesses();
+
+	const moments = React.useMemo(() => {
+		let selectedMoments: Moments[] = [];
+		if (todaysMoments && activeProcess === 'normal-moments') {
+			selectedMoments = todaysMoments;
+		} else if (activeProcess !== 'normal-moments') {
+			if (activeProcess === 'all') {
+				selectedMoments =
+					processes
+						?.flatMap((process) => process.moments)
+						.sort((a, b) => {
+							const dateA = moment(a.created_at);
+							const dateB = moment(b.created_at);
+							return moment(dateA).diff(dateB);
+						}) || [];
+			} else {
+				selectedMoments =
+					processes?.find((process) => process.id === activeProcess)?.moments ||
+					[];
+			}
+		}
+		return selectedMoments;
+	}, [todaysMoments, activeProcess]);
 
 	React.useEffect(() => {
 		if (!isCreatingMoment) {
@@ -40,9 +73,20 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 						<br /> day going? ☀️
 					</Trans>
 				}
-				rightContent={moment().format('Do MMM')}
+				rightContent={
+					<div className="flex flex-col items-end">
+						<Link href="/memories/indexes">
+							<a className="cursor-pointer mb-4">
+								<BookmarkIcon className="w-6" />
+							</a>
+						</Link>
+						{moment().format('Do MMM')}
+					</div>
+				}
 			/>
-			{(isLoading || (hasSession && !isAuth && !moments)) && <Loader />}
+			{(isLoading ||
+				isLoadingProcesses ||
+				(hasSession && !isAuth && !moments)) && <Loader />}
 			{!!moments && !isError && !moments.length && (
 				<div className="flex-grow flex items-center">
 					<EmptyState

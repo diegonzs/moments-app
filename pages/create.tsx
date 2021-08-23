@@ -30,6 +30,7 @@ import {
 	PhotographIcon,
 } from '@heroicons/react/outline';
 import { CreateItem } from 'components/create-item';
+import { Moments } from 'types/schema-types';
 
 type ImageUploadType = {
 	file: File;
@@ -257,14 +258,14 @@ const Create = () => {
 			};
 
 			mutateMoments((data) => {
-				const newMoments = createSRWMoment(data?.moments || [], {
+				const newMoments = createSRWMoment(data?.moments || [], ({
 					...variables,
 					id: uuidv4().toString(),
 					created_at: moment().format().toString(),
 					images: images.map((image) => image.url) || [],
 					videos: videos.map((video) => video.url) || [],
 					note_voices: audios.map((audio) => audio.url) || [],
-				});
+				} as unknown) as Moments);
 				return {
 					moments: newMoments,
 				};

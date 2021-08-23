@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { Rocket } from './rocket';
 import { CardMoment } from 'components/card-moment';
-import { Moment } from 'interfaces';
 import clsx from 'clsx';
+import { Moments } from 'types/schema-types';
 
 interface ListMomentsProps {
-	moments: Moment[];
+	moments: Moments[];
 }
 
 interface ElemMoment {
-	moment: Moment;
+	moment: Moments;
 	isRight: boolean;
 }
 

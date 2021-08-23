@@ -26,6 +26,7 @@ export const fetcherGraph = async <T, R>(
 	token: string,
 	variables: R | undefined
 ): Promise<T> => {
+	console.log('running a query with varialbes:', variables);
 	return client.request<T, R>(query, variables, {
 		Authorization: `Bearer ${token}`,
 	});

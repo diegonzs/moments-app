@@ -70,6 +70,21 @@ export const GET_ALL_MEMORIES = gql`
 		}
 	}
 `;
+
+export const GET_MEMORIES_BY_OFFSET = gql`
+	query GET_MEMORIES_BY_OFFSET($offset: Int) {
+		moments(offset: $offset, limit: 50, order_by: { created_at: desc }) {
+			created_at
+			is_favorite
+		}
+		moments_aggregate {
+			aggregate {
+				count
+			}
+		}
+	}
+`;
+
 export const GET_MOMENTS_BY_TAG = gql`
 	query GET_MOMENTS_BY_TAG($text: String) {
 		moment_tag(where: { tag: { text: { _eq: $text } } }) {
@@ -136,6 +151,47 @@ export const GET_INSIGHTS_MOMENTS = gql`
 			}
 		) {
 			text
+		}
+	}
+`;
+
+export const GET_MOMENTS_BY_INDEX = gql`
+	query GET_MOMENTS_BY_INDEX($indexId: uuid!) {
+		indexes_by_pk(id: $indexId) {
+			title
+			moments {
+				id
+				content
+				created_at
+				images
+				is_thanks
+				is_favorite
+				emotion
+				note_voices
+				videos
+			}
+		}
+	}
+`;
+
+export const GET_MOMENTS_PROCESSES = gql`
+	query GET_MOMENTS_PROCESSES {
+		processes {
+			title
+			is_active
+			is_completed
+			id
+			moments(order_by: { created_at: asc }) {
+				id
+				content
+				created_at
+				images
+				is_thanks
+				is_favorite
+				emotion
+				note_voices
+				videos
+			}
 		}
 	}
 `;

@@ -9,10 +9,13 @@ import {
 	GET_FAVORITE_MOMENTS,
 	GET_MOMENTS_INSIGHTS,
 	GET_INSIGHTS_MOMENTS,
+	GET_MEMORIES_BY_OFFSET,
+	GET_MOMENTS_BY_INDEX,
+	GET_MOMENTS_PROCESSES,
 } from 'gql/queries';
 import { useUser } from 'hooks/user/useUser';
 import moment from 'moment';
-import { Moments, Tags } from 'types/schema-types';
+import { Indexes, Moments, Processes, Tags } from 'types/schema-types';
 import React from 'react';
 
 export const useMoments = (config?: ConfigInterface) => {
@@ -21,10 +24,10 @@ export const useMoments = (config?: ConfigInterface) => {
 
 	const startOfDay = moment().startOf('day').format();
 
-	const { data, error, mutate } = useSWR<{ moments: Moment[] }, string>(
+	const { data, error, mutate } = useSWR<{ moments: Moments[] }, string>(
 		[GET_ALL_MOMENTS, token],
 		(query, jwt) =>
-			fetcherGraph<{ moments: Moment[] }, { createdAt: string }>(query, jwt, {
+			fetcherGraph<{ moments: Moments[] }, { createdAt: string }>(query, jwt, {
 				createdAt: startOfDay,
 			}),
 		config
@@ -44,10 +47,10 @@ export const useMomentsByTag = (text: string) => {
 	const token = user?.token;
 
 	const { data, error, mutate } = useSWR<
-		{ moment_tag: { moment: Moment }[] },
+		{ moment_tag: { moment: Moments }[] },
 		string
 	>([GET_MOMENTS_BY_TAG, token, text], (query, jwt, text) =>
-		fetcherGraph<{ moment_tag: { moment: Moment }[] }, { text: string }>(
+		fetcherGraph<{ moment_tag: { moment: Moments }[] }, { text: string }>(
 			query,
 			jwt,
 			{
@@ -69,10 +72,10 @@ export const useMomentsFavorite = () => {
 	const user = useUser();
 	const token = user?.token;
 
-	const { data, error, mutate } = useSWR<{ moments: Moment[] }, string>(
+	const { data, error, mutate } = useSWR<{ moments: Moments[] }, string>(
 		[GET_FAVORITE_MOMENTS, token],
 		(query, jwt) =>
-			fetcherGraph<{ moments: Moment[] }, undefined>(query, jwt, undefined)
+			fetcherGraph<{ moments: Moments[] }, undefined>(query, jwt, undefined)
 	);
 
 	return {
@@ -95,11 +98,11 @@ export const useMomentsByDate = (date: string) => {
 		.endOf('day')
 		.format();
 	console.log({ startOfDay, endOfDay, date });
-	const { data, error, mutate } = useSWR<{ moments: Moment[] }, string>(
+	const { data, error, mutate } = useSWR<{ moments: Moments[] }, string>(
 		[GET_MOMENTS_BY_DATE, token, startOfDay, endOfDay],
 		(query, jwt, startOfDate, endOfDate) =>
 			fetcherGraph<
-				{ moments: Moment[] },
+				{ moments: Moments[] },
 				{ startOfDate: string; endOfDate: string }
 			>(query, jwt, {
 				startOfDate,
@@ -136,6 +139,32 @@ export const useMemories = () => {
 
 	return {
 		moments: data?.moments,
+		isLoading: !error && !data,
+		isError: !!error,
+		error: error,
+		mutate,
+	};
+};
+
+export const useMemoriesByOffset = (offset: number) => {
+	const user = useUser();
+	const token = user?.token;
+
+	const { data, error, mutate } = useSWR<
+		{ moments: Moment[]; moments_aggregate: Aggregate },
+		string
+	>([GET_MEMORIES_BY_OFFSET, token, offset], (query, jwt) =>
+		fetcherGraph<
+			{ moments: Moment[]; moments_aggregate: Aggregate },
+			{ offset: number }
+		>(query, jwt, {
+			offset,
+		})
+	);
+
+	return {
+		moments: data?.moments,
+		totalMoments: data?.moments_aggregate?.aggregate.count || 0,
 		isLoading: !error && !data,
 		isError: !!error,
 		error: error,
@@ -197,11 +226,11 @@ export const useMomentsByTimeAndPeriod = (time: string, period: string) => {
 		endDate = moment().year(Number(period)).endOf('year').format();
 	}
 
-	const { data, error, mutate } = useSWR<{ moments: Moment[] }, string>(
+	const { data, error, mutate } = useSWR<{ moments: Moments[] }, string>(
 		[GET_MOMENTS_BY_DATE, token, startDate, endDate],
 		(query, jwt, startOfDate, endOfDate) =>
 			fetcherGraph<
-				{ moments: Moment[] },
+				{ moments: Moments[] },
 				{ startOfDate: string; endOfDate: string }
 			>(query, jwt, {
 				startOfDate,
@@ -267,6 +296,51 @@ export const useMomentsByInsights = (time: string, period: string) => {
 
 	return {
 		insights: data,
+		isLoading: !error && !data,
+		isError: !!error,
+		error: error,
+		mutate,
+	};
+};
+
+export const useMomentsByIndex = (indexId: string) => {
+	const user = useUser();
+	const token = user?.token;
+
+	const { data, error, mutate } = useSWR<{ indexes_by_pk: Indexes }, string>(
+		[GET_MOMENTS_BY_INDEX, token, indexId],
+		(query, jwt, indexId) =>
+			fetcherGraph<{ indexes_by_pk: Indexes }, { indexId: string }>(
+				query,
+				jwt,
+				{
+					indexId,
+				}
+			)
+	);
+
+	return {
+		moments: data?.indexes_by_pk.moments,
+		indexTitle: data?.indexes_by_pk.title,
+		isLoading: !error && !data,
+		isError: !!error,
+		error: error,
+		mutate,
+	};
+};
+
+export const useMomentsByProcesses = () => {
+	const user = useUser();
+	const token = user?.token;
+
+	const { data, error, mutate } = useSWR<{ processes: Processes[] }, string>(
+		[GET_MOMENTS_PROCESSES, token],
+		(query, jwt) =>
+			fetcherGraph<{ processes: Processes[] }, null>(query, jwt, null)
+	);
+
+	return {
+		processes: data?.processes,
 		isLoading: !error && !data,
 		isError: !!error,
 		error: error,

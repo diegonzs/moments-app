@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {
+	ActiveProcessContext,
 	CurrentMomentContext,
 	IsCreatingMomentContext,
 	ModalMediaContext,
 } from 'context';
 import { OnesignalContext } from 'context/onesignal';
 import { useTheme } from 'next-themes';
+import { MemoriesPageContext } from 'context/memories-page';
 
 export const useCurrentMoment = () => {
 	const { currentMoment, setCurrentMoment } = React.useContext(
@@ -16,6 +18,13 @@ export const useCurrentMoment = () => {
 		currentMoment,
 		setCurrentMoment,
 	};
+};
+export const useActiveProcess = () => {
+	const { activeProcess, setActiveProcess } = React.useContext(
+		ActiveProcessContext
+	);
+
+	return { activeProcess, setActiveProcess };
 };
 
 export const useModalMedia = () => {
@@ -29,6 +38,10 @@ export const useModalMedia = () => {
 
 export const useIsCreatingMoment = () => {
 	return React.useContext(IsCreatingMomentContext);
+};
+
+export const useMemoriesPageContext = () => {
+	return React.useContext(MemoriesPageContext);
 };
 
 export const useOnesignal = () => {

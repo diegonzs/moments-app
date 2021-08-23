@@ -7,7 +7,7 @@ import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 export const Loader: React.FC = () => {
 	const { theme } = useTheme();
 	return (
-		<div className="flex items-center justify-center w-full h-full">
+		<div className="flex items-center justify-center w-full h-full flex-grow">
 			<Spinner
 				type="Rings"
 				visible={true}

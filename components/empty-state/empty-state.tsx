@@ -26,7 +26,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
 	}, [ilustration, darkIlustration, theme]);
 
 	return (
-		<div className="flex items-center justify-center w-full h-full">
+		<div className="flex items-center justify-center w-full h-full flex-grow">
 			<div
 				className="flex flex-col items-center px-5"
 				style={{ maxWidth: 366 }}

@@ -1,6 +1,7 @@
 import { gql } from 'graphql-request';
 import { Moment } from 'interfaces';
 import { fetcherGraph } from 'lib';
+import { Moments } from 'types/schema-types';
 
 export const UPDATE_FAVORITE_MOMENT = gql`
 	mutation UPDATE_FAVORITE_MOMENT($id: uuid, $isFavorite: Boolean) {
@@ -37,9 +38,9 @@ export const updateFavoriteMoment = async ({
 };
 
 export const updateSWRFavoriteMoment = (
-	cacheMoments: Moment[],
-	currentMoment: Moment
-): Moment[] => {
+	cacheMoments: Moments[],
+	currentMoment: Moments
+): Moments[] => {
 	const updatedMoments = cacheMoments.map((elem) => {
 		if (elem.id === currentMoment.id) {
 			return {

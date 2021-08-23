@@ -1282,6 +1282,7 @@ export type Processes = {
 	__typename?: 'processes';
 	created_at: Scalars['timestamptz'];
 	id: Scalars['uuid'];
+	is_active?: Maybe<Scalars['Boolean']>;
 	is_completed: Scalars['Boolean'];
 	/** An array relationship */
 	moments: Array<Moments>;
@@ -1351,6 +1352,7 @@ export type Processes_Bool_Exp = {
 	_or?: Maybe<Array<Maybe<Processes_Bool_Exp>>>;
 	created_at?: Maybe<Timestamptz_Comparison_Exp>;
 	id?: Maybe<Uuid_Comparison_Exp>;
+	is_active?: Maybe<Boolean_Comparison_Exp>;
 	is_completed?: Maybe<Boolean_Comparison_Exp>;
 	moments?: Maybe<Moments_Bool_Exp>;
 	title?: Maybe<String_Comparison_Exp>;
@@ -1368,6 +1370,7 @@ export enum Processes_Constraint {
 export type Processes_Insert_Input = {
 	created_at?: Maybe<Scalars['timestamptz']>;
 	id?: Maybe<Scalars['uuid']>;
+	is_active?: Maybe<Scalars['Boolean']>;
 	is_completed?: Maybe<Scalars['Boolean']>;
 	moments?: Maybe<Moments_Arr_Rel_Insert_Input>;
 	title?: Maybe<Scalars['String']>;
@@ -1439,6 +1442,7 @@ export type Processes_On_Conflict = {
 export type Processes_Order_By = {
 	created_at?: Maybe<Order_By>;
 	id?: Maybe<Order_By>;
+	is_active?: Maybe<Order_By>;
 	is_completed?: Maybe<Order_By>;
 	moments_aggregate?: Maybe<Moments_Aggregate_Order_By>;
 	title?: Maybe<Order_By>;
@@ -1458,6 +1462,8 @@ export enum Processes_Select_Column {
 	/** column name */
 	Id = 'id',
 	/** column name */
+	IsActive = 'is_active',
+	/** column name */
 	IsCompleted = 'is_completed',
 	/** column name */
 	Title = 'title',
@@ -1471,6 +1477,7 @@ export enum Processes_Select_Column {
 export type Processes_Set_Input = {
 	created_at?: Maybe<Scalars['timestamptz']>;
 	id?: Maybe<Scalars['uuid']>;
+	is_active?: Maybe<Scalars['Boolean']>;
 	is_completed?: Maybe<Scalars['Boolean']>;
 	title?: Maybe<Scalars['String']>;
 	updated_at?: Maybe<Scalars['timestamptz']>;
@@ -1483,6 +1490,8 @@ export enum Processes_Update_Column {
 	CreatedAt = 'created_at',
 	/** column name */
 	Id = 'id',
+	/** column name */
+	IsActive = 'is_active',
 	/** column name */
 	IsCompleted = 'is_completed',
 	/** column name */

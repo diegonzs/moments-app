@@ -1,16 +1,18 @@
 import * as React from 'react';
 import type { AppProps /*, AppContext */ } from 'next/app';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import momentjs from 'moment';
 import { ThemeProvider } from 'next-themes';
-import { Moment } from 'interfaces';
 import { I18nProvider } from '@lingui/react';
 import { i18n } from '@lingui/core';
 
 import { uploadFiles } from 'lib/upload-file';
 import { createMoment, CreateMomentVariables } from 'gql/mutations';
-import { IsCreatingMomentContext, UserContext } from 'context';
+import {
+	ActiveProcessContext,
+	IsCreatingMomentContext,
+	UserContext,
+} from 'context';
 import { CurrentMomentContext } from 'context/current-moment';
 import { useFirebaseUser } from 'hooks/user/useFirebaseUser';
 import { DetailMoment } from 'components/detail-moment';
@@ -22,14 +24,23 @@ import { BottomSheet } from 'components/bottom-sheet';
 import { useWindowSize } from 'hooks/use-window-size';
 
 import 'styles/global-tailwind.css';
+import { Moments } from 'types/schema-types';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const router = useRouter();
 	const { height } = useWindowSize();
-	const [currentMoment, setCurrentMoment] = React.useState<Moment | null>(null);
-	const [isCreatingMoment, setIsCreatingMoment] = React.useState<boolean>(
-		false
+	const [currentMoment, setCurrentMoment] = React.useState<Moments | null>(
+		null
 	);
+	const [isCreatingMoment, setIsCreatingMoment] = React.useState(false);
+
+	// const [memoriesState, setmMemoriesState] = React.useState<{
+	// 	memories: Record<string, CardMemoryProps>;
+	// 	offset: number;
+	// }>();
+
+	const [activeProcess, setActiveProcess] = React.useState('normal-moments');
+
 	const user = useFirebaseUser();
 
 	const handleCreateMoment = async (
@@ -82,41 +93,56 @@ function MyApp({ Component, pageProps }: AppProps) {
 		momentjs.locale(router.locale);
 	}, [router.locale]);
 
+	const isCreatingMomentContext = React.useMemo(
+		() => ({
+			isCreatingMoment,
+			handleCreateMoment,
+		}),
+		[isCreatingMoment, handleCreateMoment]
+	);
+
+	const currentMomentContext = React.useMemo(
+		() => ({
+			currentMoment,
+			setCurrentMoment,
+		}),
+		[currentMoment, setCurrentMoment]
+	);
+
+	const activeProcessContext = React.useMemo(
+		() => ({
+			activeProcess,
+			setActiveProcess,
+		}),
+		[activeProcess, setActiveProcess]
+	);
+
 	return (
 		<ThemeProvider attribute="class">
 			<I18nProvider i18n={i18n}>
 				<UserContext.Provider value={user}>
-					<IsCreatingMomentContext.Provider
-						value={{ isCreatingMoment, handleCreateMoment }}
-					>
-						<CurrentMomentContext.Provider
-							value={{ currentMoment, setCurrentMoment }}
-						>
-							<Head>
-								<meta
-									name="viewport"
-									content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-								/>
-							</Head>
-							<div
-								style={{
-									minHeight: height ? `${height}px` : '100vh',
-									// paddingBottom: !router.pathname.includes('create')
-									// 	? '100px'
-									// 	: '0',
-									display: 'flex',
-									flexDirection: 'column',
-								}}
-							>
-								<Component {...pageProps} />
-								<BottomSheet
-									shouldOpen={!!currentMoment}
-									onCloseCallback={() => setCurrentMoment(null)}
+					<IsCreatingMomentContext.Provider value={isCreatingMomentContext}>
+						<CurrentMomentContext.Provider value={currentMomentContext}>
+							<ActiveProcessContext.Provider value={activeProcessContext}>
+								<div
+									style={{
+										minHeight: height ? `${height}px` : '100vh',
+										display: 'flex',
+										flexDirection: 'column',
+									}}
 								>
-									{({ onClose }) => <DetailMoment closeBottomSheet={onClose} />}
-								</BottomSheet>
-								{isCreatingMoment && <Loader />}
-							</div>
+									<Component {...pageProps} />
+									<BottomSheet
+										shouldOpen={!!currentMoment}
+										onCloseCallback={() => setCurrentMoment(null)}
+									>
+										{({ onClose }) => (
+											<DetailMoment closeBottomSheet={onClose} />
+										)}
+									</BottomSheet>
+									{isCreatingMoment && <Loader />}
+								</div>
+							</ActiveProcessContext.Provider>
 						</CurrentMomentContext.Provider>
 					</IsCreatingMomentContext.Provider>
 				</UserContext.Provider>

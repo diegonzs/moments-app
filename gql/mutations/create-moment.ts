@@ -3,6 +3,7 @@ import { gql } from 'graphql-request';
 import { Moment } from 'interfaces';
 import { fetcherGraph } from 'lib';
 import { mutate } from 'swr';
+import { Moments } from 'types/schema-types';
 import { v4 as uuidv4 } from 'uuid';
 
 export const CREATE_MOMENT = gql`
@@ -71,9 +72,9 @@ export const createMoment = async ({
 };
 
 export const createSRWMoment = (
-	cacheMoments: Moment[],
-	newMoment: Moment
-): Moment[] => {
+	cacheMoments: Moments[],
+	newMoment: Moments
+): Moments[] => {
 	const newMoments = [
 		...cacheMoments,
 		{ ...newMoment, id: uuidv4().toString() },

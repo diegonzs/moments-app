@@ -4,9 +4,9 @@ import Image from 'next/image';
 import moment from 'moment';
 import clsx from 'clsx';
 import { useCurrentMoment } from 'hooks';
-import { Moment } from 'interfaces';
 import { Icon } from 'components/icon';
 import { useRouter } from 'next/router';
+import { Moments } from 'types/schema-types';
 
 export const NoteVoice: React.FC<{ audio: string }> = ({ audio }) => (
 	<div className="flex items-center mb-2">
@@ -64,7 +64,7 @@ export const NoteVideo: React.FC<{ video: string }> = ({ video }) => (
 	</div>
 );
 
-export const CardMoment: React.FC<Moment> = (cardMoment) => {
+export const CardMoment: React.FC<Moments> = (cardMoment) => {
 	const { setCurrentMoment } = useCurrentMoment();
 	const router = useRouter();
 	const {

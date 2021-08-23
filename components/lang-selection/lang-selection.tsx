@@ -50,7 +50,7 @@ export const LangSelection: React.FC<LangSelectionProps> = ({ hideModal }) => {
 					onClick={onChangeLang}
 				>
 					<Subtitle type="1">
-						🇺🇸 <Trans>Spanish</Trans>
+						🇪🇸 <Trans>Spanish</Trans>
 					</Subtitle>
 					{router.locale === 'es' && <Icon src="/images/icons/check.svg" />}
 				</div>

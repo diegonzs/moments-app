@@ -19,14 +19,11 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 	onCloseCallback,
 }) => {
 	// const { currentMoment, setCurrentMoment } = useCurrentMoment();
+	const elementRef = React.useRef<HTMLDivElement>(null);
 	const [currentPosition, setCurrenPosition] = React.useState(0);
 	const [vh, setVh] = React.useState(0);
 	const [isOpen, setIsOpen] = React.useState(false);
 	const [isOnTop, setIsOnTop] = React.useState(false);
-
-	React.useEffect(() => {
-		console.log(allowTop);
-	}, []);
 
 	React.useEffect(() => {
 		if (shouldOpen) {
@@ -36,7 +33,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 
 	const moveElement = React.useCallback(
 		(position: number, viewprtHeight: number): void => {
-			const $element = document.getElementById('main-content');
+			const $element = elementRef.current;
 			if ($element) {
 				$element.style.transform = `translateY(calc(${position}px * -1))`;
 				if (
@@ -62,7 +59,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 	}, []);
 
 	const addTransition = React.useCallback((isRemoving?: boolean): void => {
-		const $element = document.getElementById('main-content');
+		const $element = elementRef.current;
 		if ($element) {
 			$element.style.transition = 'transform 0.25s ease';
 			if (isRemoving) {
@@ -127,7 +124,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 
 	const controlEvent = (deltaY: number): void => {
 		if (deltaY) {
-			const $element = document.getElementById('main-content');
+			const $element = elementRef.current;
 			if ($element) {
 				if (isOnTop && deltaY < 0) {
 					onScrollElement(deltaY);
@@ -157,7 +154,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 	};
 
 	const onScrollElement = (delta: number): void => {
-		const $element = document.getElementById('main-content');
+		const $element = elementRef.current;
 		if ($element) {
 			$element.scrollTop = $element.scrollTop + delta * -1;
 		}
@@ -167,7 +164,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 		<>
 			{isOpen && (
 				<div
-					className="fixed z-10 top-0 w-full h-screen bg-dark-50"
+					className="fixed z-10 inset-0 w-full h-screen bg-dark-50"
 					onClick={() => closeBottomSheet()}
 				></div>
 			)}
@@ -176,7 +173,7 @@ export const BottomSheet: React.FC<BottomSheetProps> = ({
 				onStop={() => checkTopOrClose()}
 			>
 				<div
-					id="main-content"
+					ref={elementRef}
 					style={{
 						bottom: `-${vh * 100}px`,
 						height: `${vh * 100}px`,

@@ -5,6 +5,8 @@ export const GET_ALL_PROCESSES = gql`
 		processes {
 			id
 			title
+			is_completed
+			is_active
 			moments_aggregate {
 				aggregate {
 					count

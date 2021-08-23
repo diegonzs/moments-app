@@ -77,7 +77,7 @@ const InsightByPeriod = () => {
 			<HeadMoments
 				leftContent={
 					<div className="flex items-center">
-						<Link href="/insights">
+						<Link href="/memories">
 							<div className="cursor-pointer">
 								<Icon src="/images/icons/back-arrow.svg" />
 							</div>
