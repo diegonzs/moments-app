@@ -278,6 +278,10 @@ export const ProcessListElem: React.FC<{
 	return (
 		<div className="flex justify-between items-center">
 			<div
+				onTouchStart={() => {
+					setActiveProcess(id);
+					onClick();
+				}}
 				onClick={() => {
 					setActiveProcess(id);
 					onClick();
