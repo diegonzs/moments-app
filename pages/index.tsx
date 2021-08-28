@@ -15,8 +15,10 @@ import {
 } from 'hooks';
 import { Trans } from '@lingui/macro';
 import Link from 'next/link';
-import { BookmarkIcon } from '@heroicons/react/outline';
+import { BookmarkIcon, CogIcon } from '@heroicons/react/outline';
 import { Moments } from 'types/schema-types';
+import { useModal } from 'hooks/use-modal';
+import { ProcessSettings } from 'components/process-settings';
 
 const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 	hasSession = false,
@@ -28,6 +30,8 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 	const { moments: todaysMoments, isLoading, isError, mutate } = useMoments({
 		revalidateOnMount: false,
 	});
+
+	const { Modal, show, hide, isShow } = useModal();
 
 	const { processes, isLoading: isLoadingProcesses } = useMomentsByProcesses();
 
@@ -60,34 +64,57 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 		}
 	}, [isCreatingMoment]);
 
+	const isLoadingVisible = React.useMemo(() => {
+		return (
+			isLoading || isLoadingProcesses || (hasSession && !isAuth && !moments)
+		);
+	}, [isLoading, isLoadingProcesses, hasSession, isAuth, moments]);
+
+	const titleText = React.useMemo(() => {
+		if (activeProcess === 'normal-moments') {
+			return (
+				<Trans>
+					How is your
+					<br /> day going? ☀️
+				</Trans>
+			);
+		} else if (activeProcess === 'all') {
+			return <Trans>All Process</Trans>;
+		} else {
+			return (
+				processes?.find((process) => process.id === activeProcess)?.title || ''
+			);
+		}
+	}, [activeProcess, processes]);
+
+	const rightContent = React.useMemo(() => {
+		if (activeProcess === 'normal-moments' || activeProcess === 'all') {
+			return (
+				<div className="flex flex-col items-end">
+					<Link href="/memories/indexes">
+						<a className="cursor-pointer mb-4">
+							<BookmarkIcon className="w-6" />
+						</a>
+					</Link>
+					{moment().format('Do MMM')}
+				</div>
+			);
+		} else {
+			return (
+				<CogIcon className="w-6 cursor-pointer text-primary" onClick={show} />
+			);
+		}
+	}, [activeProcess]);
+
 	return (
 		<div
 			className={clsx(
 				'relative flex flex-col flex-grow w-full h-full bg-background justify-between pb-24'
 			)}
 		>
-			<HeadMoments
-				leftContent={
-					<Trans>
-						How is your
-						<br /> day going? ☀️
-					</Trans>
-				}
-				rightContent={
-					<div className="flex flex-col items-end">
-						<Link href="/memories/indexes">
-							<a className="cursor-pointer mb-4">
-								<BookmarkIcon className="w-6" />
-							</a>
-						</Link>
-						{moment().format('Do MMM')}
-					</div>
-				}
-			/>
-			{(isLoading ||
-				isLoadingProcesses ||
-				(hasSession && !isAuth && !moments)) && <Loader />}
-			{!!moments && !isError && !moments.length && (
+			<HeadMoments leftContent={titleText} rightContent={rightContent} />
+			{isLoadingVisible && <Loader />}
+			{!!moments && !isError && !moments.length && !isLoadingVisible && (
 				<div className="flex-grow flex items-center">
 					<EmptyState
 						ilustration="/images/svgs/empty-state.svg"
@@ -99,6 +126,9 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 			)}
 			{!!moments && !!moments.length && <ListMoments moments={moments} />}
 			<NavBar />
+			<Modal isShow={isShow}>
+				<ProcessSettings hideModal={hide} />
+			</Modal>
 		</div>
 	);
 };

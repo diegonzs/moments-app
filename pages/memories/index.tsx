@@ -10,9 +10,8 @@ import Link from 'next/link';
 import { useMemoriesByOffset } from 'hooks/api';
 import { Loader } from 'components/loader';
 import { t, Trans } from '@lingui/macro';
-import { BookmarkIcon, DocumentDownloadIcon } from '@heroicons/react/outline';
+import { BookmarkIcon } from '@heroicons/react/outline';
 import { SecondaryCard } from 'components/insightsv3';
-// import { GetServerSideProps } from 'next';
 
 const Memories: React.FC = () => {
 	const [offset, setOffset] = React.useState(0);
@@ -44,12 +43,9 @@ const Memories: React.FC = () => {
 					data[key] = {
 						...data[key],
 						momentsCount: data[key].momentsCount + 1,
-						stars: moment.is_favorite ? data[key].stars + 1 : data[key].stars,
 					};
 				} else {
 					data[key] = {
-						isAgreatDay: false,
-						stars: moment.is_favorite ? 1 : 0,
 						momentsCount: 1,
 						date: moment.created_at,
 					};
@@ -105,24 +101,31 @@ const Memories: React.FC = () => {
 			)}
 			{!!memories?.length && (
 				<div className="flex flex-col mt-8 px-5">
-					<div
-						className="mb-4 cursor-pointer"
-						onClick={() => setAllView((prev) => !prev)}
-					>
+					<div className="mb-4">
 						{!isAllview ? (
 							<div className="flex w-full justify-end">
-								<Subtitle type="2" className="text-secondary">
-									<Trans>View All</Trans>
-								</Subtitle>
+								<div
+									onClick={() => setAllView((prev) => !prev)}
+									className="cursor-pointer"
+								>
+									<Subtitle type="2" className="text-secondary">
+										<Trans>View All</Trans>
+									</Subtitle>
+								</div>
 							</div>
 						) : (
 							<div className="w-full flex justify-between">
 								<Subtitle type="2" className="text-primary-60">
 									<Trans>All Moments</Trans>
 								</Subtitle>
-								<Subtitle type="2" className="text-secondary">
-									<Trans>View Per Day</Trans>
-								</Subtitle>
+								<div
+									onClick={() => setAllView((prev) => !prev)}
+									className="cursor-pointer"
+								>
+									<Subtitle type="2" className="text-secondary">
+										<Trans>View Per Day</Trans>
+									</Subtitle>
+								</div>
 							</div>
 						)}
 					</div>
@@ -155,7 +158,7 @@ export const LoadMoreCardMemory: React.FC<{ handleClick: () => void }> = ({
 			style={{ borderRadius: 20 }}
 			onClick={handleClick}
 		>
-			<DocumentDownloadIcon className="w-6 mb-4" />
+			<Icon src="/images/icons/scroll.svg" className="text-primary" fill />
 			<Subtitle type="1">
 				<Trans>
 					Load More <br /> Memories
@@ -168,23 +171,20 @@ export const LoadMoreCardMemory: React.FC<{ handleClick: () => void }> = ({
 export const AllViewMemories: React.FC = () => {
 	return (
 		<div className="flex flex-col">
-			{/* <Subtitle type="2" className="mb-4 text-primary-60">
-				<Trans>Top moments</Trans>
-			</Subtitle> */}
 			<div className="grid gap-3">
 				<SecondaryCard
 					href={`/memories/all/weekly/${momentjs().week()}`}
-					title="Best Weekly Moments"
+					title={t`Weekly Moments`}
 					icon="✌️"
 				/>
 				<SecondaryCard
 					href={`/memories/all/monthly/${momentjs().month()}`}
-					title="Best Monthly Moments"
+					title={t`Monthly Moments`}
 					icon="️💪"
 				/>
 				<SecondaryCard
 					href={`/memories/all/yearly/${momentjs().year()}`}
-					title="Best Yearly Moments"
+					title={t`Yearly Moments`}
 					icon="️🙌"
 				/>
 			</div>

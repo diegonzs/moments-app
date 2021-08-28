@@ -128,7 +128,7 @@ export const NavBar: React.FC = () => {
 		<>
 			<div
 				className={clsx(
-					'fixed bottom-0 py-2 pb-6 left-0 flex flex-col px-8 w-full bg-background-nav rounded-t-3xl transform transition-transform duration-300'
+					'fixed bottom-0 py-4 left-0 flex flex-col px-8 w-full bg-background-nav rounded-t-3xl transform transition-transform duration-300'
 				)}
 			>
 				<div className="flex items-center justify-between h-full">

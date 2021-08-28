@@ -1,18 +1,14 @@
 import * as React from 'react';
 import Link from 'next/link';
 import moment from 'moment';
-import { Caption, Subtitle } from 'components/typography';
+import { Subtitle } from 'components/typography';
 
 export interface CardMemoryProps {
-	isAgreatDay: boolean;
-	stars: number;
 	date: string;
 	momentsCount: number;
 }
 
 export const CardMemory: React.FC<CardMemoryProps> = ({
-	isAgreatDay,
-	stars,
 	date,
 	momentsCount,
 }) => {
@@ -34,16 +30,6 @@ export const CardMemory: React.FC<CardMemoryProps> = ({
 					<Subtitle type="1" className="text-primary">
 						{momentsCount} Moments
 					</Subtitle>
-					{!!stars && (
-						<Subtitle type="1" className="text-primary">
-							{stars} Stars
-						</Subtitle>
-					)}
-					{isAgreatDay && (
-						<Caption type="2" className="mt-1 text-secondary">
-							You had a great day
-						</Caption>
-					)}
 				</div>
 			</div>
 		</Link>

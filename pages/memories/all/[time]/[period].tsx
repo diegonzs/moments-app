@@ -69,7 +69,7 @@ const InsightByPeriod = () => {
 
 	const onChangePeriod = (value: string) => {
 		const parseValue = JSON.parse(value);
-		router.push(`/insights/${parseValue[0]}/${parseValue[1]}`);
+		router.push(`/memories/all/${parseValue[0]}/${parseValue[1]}`);
 	};
 
 	return (

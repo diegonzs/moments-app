@@ -107,7 +107,7 @@ const Reminders: React.FC = () => {
 	return (
 		<Layout className="bg-background" withNavBar={false}>
 			<HeadPage title={t`Reminders`} href="/settings" />
-			<div className="self-start px-5">
+			<div className="self-start px-5 w-full">
 				{!isOnesignalActive ? (
 					<Loader />
 				) : (

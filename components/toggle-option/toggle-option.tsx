@@ -20,8 +20,8 @@ export const ToggleOption: React.FC<ToggleOptionProps> = ({
 	return (
 		<div className="flex justify-between mb-6">
 			<div className="flex flex-col" style={{ maxWidth: 215 }}>
-				<Subtitle className="mb-2 text-primary">{title}</Subtitle>
-				<Caption className="text-primary-60">{description}</Caption>
+				<Subtitle className="mb-2 text-primary text-left">{title}</Subtitle>
+				<Caption className="text-primary-60 text-left">{description}</Caption>
 			</div>
 			<div>
 				<Toggle

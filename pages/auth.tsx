@@ -40,7 +40,7 @@ const Auth: React.FC = () => {
 	}, [user]);
 
 	return (
-		<div className="grid pb-8 px-8 w-full h-full bg-background">
+		<div className="flex flex-grow flex-col items-center justify-between pb-8 px-8 w-full h-full bg-background">
 			<div className="absolute right-0 top-0">
 				<SVG
 					src={
@@ -70,7 +70,7 @@ const Auth: React.FC = () => {
 					</Trans>
 				</BodyText>
 			</div>
-			<div className="self-end">
+			<div>
 				<Button
 					icon="/images/svgs/google-icon.svg"
 					onClick={handleSigninProvider}

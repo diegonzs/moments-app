@@ -39,7 +39,7 @@ const MemoriesByIndex: React.FC = () => {
 					ilustration="/images/svgs/empty-state-rocket.svg"
 					darkIlustration="/images/svgs/dark/empty-state-rocket-dark.svg"
 					ilustrationSize="218"
-					description={t`Start saving moments with this hashtag to see them here.`}
+					description={t`Start saving moments with this index to see them here.`}
 				/>
 			)}
 			{moments && !!moments.length && <ListMoments moments={moments} />}
