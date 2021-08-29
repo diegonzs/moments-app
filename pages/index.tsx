@@ -33,7 +33,11 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 
 	const { Modal, show, hide, isShow } = useModal();
 
-	const { processes, isLoading: isLoadingProcesses } = useMomentsByProcesses();
+	const {
+		processes,
+		isLoading: isLoadingProcesses,
+		mutate: mutateProcesses,
+	} = useMomentsByProcesses();
 
 	const moments = React.useMemo(() => {
 		let selectedMoments: Moments[] = [];
@@ -43,6 +47,7 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 			if (activeProcess === 'all') {
 				selectedMoments =
 					processes
+						?.filter((process) => !!process.is_active)
 						?.flatMap((process) => process.moments)
 						.sort((a, b) => {
 							const dateA = moment(a.created_at);
@@ -69,6 +74,25 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 			isLoading || isLoadingProcesses || (hasSession && !isAuth && !moments)
 		);
 	}, [isLoading, isLoadingProcesses, hasSession, isAuth, moments]);
+
+	const { processId, processActiveStatus } = React.useMemo(() => {
+		const data = {
+			processId: '',
+			processActiveStatus: false,
+		};
+		if (activeProcess !== 'normal-moments' && activeProcess !== 'all') {
+			const process = processes?.find(
+				(process) => process.id === activeProcess
+			);
+			if (process) {
+				return {
+					processId: process.id as string,
+					processActiveStatus: !!process.is_active,
+				};
+			}
+		}
+		return data;
+	}, [processes, activeProcess]);
 
 	const titleText = React.useMemo(() => {
 		if (activeProcess === 'normal-moments') {
@@ -127,7 +151,12 @@ const Home: React.FC<{ hasSession: boolean; isAuth: boolean }> = ({
 			{!!moments && !!moments.length && <ListMoments moments={moments} />}
 			<NavBar />
 			<Modal isShow={isShow}>
-				<ProcessSettings hideModal={hide} />
+				<ProcessSettings
+					hideModal={hide}
+					processId={processId}
+					processStatus={processActiveStatus}
+					onSucess={mutateProcesses}
+				/>
 			</Modal>
 		</div>
 	);

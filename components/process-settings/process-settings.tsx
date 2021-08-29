@@ -4,15 +4,38 @@ import * as React from 'react';
 import clsx from 'clsx';
 import { useTheme } from 'next-themes';
 import { ToggleOption } from 'components/toggle-option';
+import { toggleActiveProcess } from 'gql/mutations/toggle-active-process';
+import { useUser } from 'hooks/user/useUser';
 
 type ProcessSettingsProps = {
 	hideModal: () => void;
+	processId: string;
+	processStatus: boolean;
+	onSucess: () => void;
 };
 
 export const ProcessSettings: React.FC<ProcessSettingsProps> = ({
 	hideModal,
+	processId,
+	processStatus,
+	onSucess,
 }) => {
 	const { theme } = useTheme();
+	const user = useUser();
+	const token = user?.token || '';
+	const [loading, setLoading] = React.useState(false);
+
+	const handleToggle = async () => {
+		setLoading(true);
+		await toggleActiveProcess({
+			token,
+			id: processId,
+			activeStatus: !processStatus,
+		});
+		onSucess();
+		setLoading(false);
+	};
+
 	return (
 		<div
 			className={clsx(
@@ -25,8 +48,9 @@ export const ProcessSettings: React.FC<ProcessSettingsProps> = ({
 				<ToggleOption
 					title={t`Active Rocket`}
 					description={t`Is this process relevant to you right now?`}
-					isActive={true}
-					onToggle={() => null}
+					isActive={processStatus}
+					isDisabled={loading}
+					onToggle={handleToggle}
 				/>
 			</div>
 		</div>
