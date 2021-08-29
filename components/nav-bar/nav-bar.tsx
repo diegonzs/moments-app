@@ -55,18 +55,31 @@ const HomeIcon: React.FC<{
 	if (route === selectedRoute) {
 		return (
 			<div
-				className="z-20 cursor-pointer flex flex-col items-center"
+				className="z-20 cursor-pointer flex flex-col items-center relative"
 				onClick={openBottomSheet}
 			>
-				<Icon
-					src={`/images/icons/${icon}.svg`}
-					width="24"
-					height="24"
-					className={clsx(
-						{ 'text-secondary': route === selectedRoute },
-						{ 'text-primary': route !== selectedRoute }
-					)}
-				/>
+				<div className="relative">
+					<div className="absolute -left-3 top-[2px]">
+						<Icon
+							src="/images/icons/drops.svg"
+							className={clsx(
+								selectedRoute === 'home' ? 'text-secondary' : 'text-primary'
+							)}
+							width="8"
+						/>
+					</div>
+					<Icon
+						src={`/images/icons/${icon}.svg`}
+						width="24"
+						height="24"
+						fill={icon === 'rocket'}
+						withSVGStyles={icon !== 'rocket'}
+						className={clsx(
+							{ 'text-secondary': route === selectedRoute },
+							{ 'text-primary': route !== selectedRoute }
+						)}
+					/>
+				</div>
 				<Caption
 					type="2"
 					className={clsx(
@@ -81,11 +94,22 @@ const HomeIcon: React.FC<{
 	}
 	return (
 		<Link href={route === 'home' ? '/' : `/${route}`}>
-			<div className="z-20 cursor-pointer flex flex-col items-center">
+			<div className="z-20 cursor-pointer flex flex-col items-center relative">
+				<div className="absolute left-1 top-1">
+					<Icon
+						src="/images/icons/drops.svg"
+						className={clsx(
+							selectedRoute === 'home' ? 'text-secondary' : 'text-primary'
+						)}
+						width="8"
+					/>
+				</div>
 				<Icon
 					src={`/images/icons/${icon}.svg`}
 					width="24"
 					height="24"
+					fill={icon === 'rocket'}
+					withSVGStyles={icon !== 'rocket'}
 					className={clsx(
 						{ 'text-secondary': route === selectedRoute },
 						{ 'text-primary': route !== selectedRoute }
@@ -121,9 +145,34 @@ const selectRoute = (
 
 export const NavBar: React.FC = () => {
 	const router = useRouter();
+	const { activeProcess } = useActiveProcess();
 	const selectedRoute = selectRoute(router.pathname);
 	const [isBottomSheetOpen, setIsBottomSheetOpen] = React.useState(false);
 	const { processes, isLoading } = useProcesses();
+
+	const processesIds = React.useMemo(() => {
+		const data: string[] = [];
+		if (processes) {
+			processes.forEach((elem) => {
+				data.push(elem.id);
+			});
+		}
+		return data;
+	}, [processes]);
+
+	const homeLabel = React.useMemo(() => {
+		let label = '';
+		if (activeProcess && processesIds.includes(activeProcess)) {
+			label = processes?.find((elem) => elem.id === activeProcess)?.title || '';
+		} else {
+			label = 'All';
+		}
+		if (label.length > 9) {
+			return `${label.split('').slice(0, 9).join('').trim()}...`;
+		}
+		return label;
+	}, [processes, activeProcess, processesIds]);
+
 	return (
 		<>
 			<div
@@ -133,10 +182,10 @@ export const NavBar: React.FC = () => {
 			>
 				<div className="flex items-center justify-between h-full">
 					<HomeIcon
-						icon="home"
+						icon="rocket"
 						route="home"
 						selectedRoute={selectedRoute}
-						label="All"
+						label={homeLabel}
 						openBottomSheet={() => setIsBottomSheetOpen(true)}
 					/>
 					<NavigateIcon

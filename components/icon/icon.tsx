@@ -10,6 +10,7 @@ interface IconProps {
 	className?: string;
 	pointer?: boolean;
 	fill?: boolean;
+	withSVGStyles?: boolean;
 }
 
 export const Icon: React.FC<IconProps> = ({
@@ -19,15 +20,21 @@ export const Icon: React.FC<IconProps> = ({
 	className,
 	pointer = false,
 	fill,
+	withSVGStyles = true,
 }) => {
 	return (
 		<SVG
 			src={src}
 			width={width}
 			height={height}
-			className={clsx(className, styles.svg, [fill && styles.svgFill], {
-				'cursor-pointer': pointer,
-			})}
+			className={clsx(
+				className,
+				[withSVGStyles && styles.svg],
+				[fill && styles.svgFill],
+				{
+					'cursor-pointer': pointer,
+				}
+			)}
 		/>
 	);
 };

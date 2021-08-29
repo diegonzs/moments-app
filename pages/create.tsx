@@ -150,7 +150,7 @@ const Create = () => {
 
 	const saveProcess = async (value: string) => {
 		if (value) {
-			const formattedValue = value.toLowerCase().trim();
+			const formattedValue = value.trim();
 			const savingProcess = {
 				id: '',
 				title: '',
