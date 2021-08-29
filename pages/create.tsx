@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import clsx from 'clsx';
 import moment from 'moment';
 import { Icon } from 'components/icon';
-import { BodyText, Subtitle, Title } from 'components/typography';
+import { BodyText, Caption, Subtitle, Title } from 'components/typography';
 import { useModal } from 'hooks/use-modal';
 import { useWindowSize } from 'hooks/use-window-size';
 import { Alert } from 'components/alert';
@@ -478,11 +478,12 @@ const Create = () => {
 								width="18px"
 								height="18px"
 								fill
+								withSVGStyles={false}
 							/>
 						</div>
-						<BodyText className="text-primary-40">
+						<Caption type="2" className="text-primary-40">
 							{moment().format('LT')}
-						</BodyText>
+						</Caption>
 					</div>
 					{isHashtagListShow && (
 						<ul
@@ -497,13 +498,14 @@ const Create = () => {
 									.map((tag) => (
 										<li
 											key={tag.id}
-											className="py-2 px-5 flex justify-between"
+											className="py-2 px-5 flex justify-between cursor-pointer"
 											onClick={() => onClickTag(tag.text)}
 										>
 											<BodyText className="text-secondary">{tag.text}</BodyText>
-											<BodyText className="text-secondary">
-												{tag.tag_moments_aggregate?.aggregate.count}
-											</BodyText>
+											<Subtitle type="3" className="text-secondary">
+												{tag.tag_moments_aggregate?.aggregate.count}{' '}
+												<Trans>moments</Trans>
+											</Subtitle>
 										</li>
 									))}
 						</ul>
@@ -549,12 +551,12 @@ const Create = () => {
 				)}
 				{modalType === 'process' && (
 					<CreateItem
-						title="Add Process"
-						placeholder="Insert a process..."
-						descriptionTitle="Give a purpose to your moments"
-						descriptionBody="A process is used to keep record of your journal to achieve anything great you want in life and make them easy to be found so you can see your progress in your goals."
-						createText="Create new process"
-						activeText="All Active Processes"
+						title={t`Add Process`}
+						placeholder={t`Insert a process...`}
+						descriptionTitle={t`Give a purpose to your moments`}
+						descriptionBody={t`A process is a rocket to keep record of your journal to achieve anything great you want in life and make them easy to be found so you can see your progress in your goals. To create a process, enter one above.`}
+						createText={t`Create new process`}
+						activeText={t`All Active Processes`}
 						onCreateNewOne={async (value) => {
 							saveProcess(value);
 							hide();
@@ -569,12 +571,12 @@ const Create = () => {
 				)}
 				{modalType === 'index' && (
 					<CreateItem
-						title="Add to Index"
-						placeholder="Insert a index..."
-						descriptionTitle="Give a purpose to your moments"
-						descriptionBody="A process is used to keep record of your journal to achieve anything great you want in life and make them easy to be found so you can see your progress in your goals."
-						createText="Create new Index"
-						activeText="All Active Indexes"
+						title={t`Add to Index`}
+						placeholder={t`Insert a index...`}
+						descriptionTitle={t`Highlight special moments in your life`}
+						descriptionBody={t`An index is used to keep record of very important moments you want to remember some day and make them easy to be found so you can see important memories quickly. To create an index, enter one above.`}
+						createText={t`Create new Index`}
+						activeText={t`All Active Indexes`}
 						onClickElem={(value) => {
 							setSelectedIndex(value);
 							hide();

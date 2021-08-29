@@ -68,7 +68,10 @@ export const CreateItem: React.FC<CreateItemProps> = ({
 									className="cursor-pointer"
 									onClick={() => onClickElem(elem)}
 								>
-									<BodyText type="1" className="text-primary text-left">
+									<BodyText
+										type="1"
+										className="text-primary text-left whitespace-pre-line"
+									>
 										{elem.title}
 									</BodyText>
 								</li>

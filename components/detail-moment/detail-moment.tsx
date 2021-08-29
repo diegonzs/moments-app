@@ -13,13 +13,16 @@ import { useMoments } from 'hooks/api';
 import {
 	deleteMoment,
 	editMomentContent,
-	updateFavoriteMoment,
-	updateSWRFavoriteMoment,
+	// updateFavoriteMoment,
+	// updateSWRFavoriteMoment,
 } from 'gql/mutations';
 import { useUser } from 'hooks/user/useUser';
 import { t, Trans } from '@lingui/macro';
 import { Badge } from 'components/badge';
 import { Button } from 'components/button';
+import { BookmarkIcon } from '@heroicons/react/outline';
+import { DuplicateIcon } from '@heroicons/react/solid';
+import { Caption } from 'components/typography';
 
 interface DetailMomentProps {
 	closeBottomSheet: () => void;
@@ -35,12 +38,12 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 	const [editableContent, setEditableContent] = React.useState(
 		currentMoment?.content || ''
 	);
-	const [isFavorite, setIsFavorite] = React.useState(
-		!!currentMoment?.is_favorite
-	);
-	React.useEffect(() => {
-		setIsFavorite(!!currentMoment?.is_favorite);
-	}, [currentMoment]);
+	// const [isFavorite, setIsFavorite] = React.useState(
+	// 	!!currentMoment?.is_favorite
+	// );
+	// React.useEffect(() => {
+	// 	setIsFavorite(!!currentMoment?.is_favorite);
+	// }, [currentMoment]);
 	const {
 		show: showMediaModal,
 		hide: hideMediaModal,
@@ -60,29 +63,29 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 		Modal: EditModal,
 	} = useModal();
 
-	const handleUpdateFavoriteMoment = async (): Promise<void> => {
-		const token = user?.token || '';
-		setIsFavorite(!isFavorite);
-		if (currentMoment) {
-			mutate((data) => {
-				const updatedMoments = updateSWRFavoriteMoment(
-					data?.moments || [],
-					currentMoment
-				);
-				return {
-					moments: updatedMoments,
-				};
-			}, false);
-			await updateFavoriteMoment({
-				token,
-				variables: {
-					id: currentMoment?.id || '',
-					isFavorite: !currentMoment?.is_favorite,
-				},
-			});
-			mutate();
-		}
-	};
+	// const handleUpdateFavoriteMoment = async (): Promise<void> => {
+	// 	const token = user?.token || '';
+	// 	setIsFavorite(!isFavorite);
+	// 	if (currentMoment) {
+	// 		mutate((data) => {
+	// 			const updatedMoments = updateSWRFavoriteMoment(
+	// 				data?.moments || [],
+	// 				currentMoment
+	// 			);
+	// 			return {
+	// 				moments: updatedMoments,
+	// 			};
+	// 		}, false);
+	// 		await updateFavoriteMoment({
+	// 			token,
+	// 			variables: {
+	// 				id: currentMoment?.id || '',
+	// 				isFavorite: !currentMoment?.is_favorite,
+	// 			},
+	// 		});
+	// 		mutate();
+	// 	}
+	// };
 
 	const handleDeleteMoment = async (): Promise<void> => {
 		const token = user?.token || '';
@@ -141,11 +144,30 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 		}
 	}, [currentMoment]);
 
+	const mediaCount = React.useMemo(() => {
+		if (currentMoment) {
+			const data =
+				(currentMoment.images?.length || 0) +
+				(currentMoment.videos?.length || 0) +
+				(currentMoment.note_voices?.length || 0);
+			console.log(data);
+			return data;
+		}
+	}, [currentMoment]);
+
 	return (
 		<>
 			<div className={clsx('flex flex-col items-center p-5 pt-3 w-full')}>
 				{!!currentMoment?.images?.length && (
 					<div className="relative mb-5 w-full rounded-1.2lg overflow-hidden">
+						{mediaCount > 1 && (
+							<div
+								className="absolute top-2 left-2 z-10"
+								style={{ transform: 'matrix(-1, 0, 0, 1, 0, 0)' }}
+							>
+								<DuplicateIcon className="w-6 text-white" />
+							</div>
+						)}
 						<Image
 							width={355}
 							height={222}
@@ -154,7 +176,9 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 							objectFit="cover"
 							layout="responsive"
 						/>
-						<Badge onClick={showMediaModal}>Expand</Badge>
+						<div className="absolute bottom-3 right-3">
+							<Badge onClick={showMediaModal} text={t`Expand`} />
+						</div>
 					</div>
 				)}
 				{!!currentMoment?.videos?.length && !currentMoment?.images?.length && (
@@ -170,9 +194,9 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 						<Badge onClick={showMediaModal}>Expand</Badge>
 					</div>
 				)}
-				<div className="flex items-center justify-between mb-6 w-full">
+				<div className="flex items-center justify-between w-full">
 					<div className="flex gap-3 items-center">
-						<p className="text-primary-light font-sans text-lg font-semibold">
+						<p className="font-sans text-primary-60 text-lg font-semibold">
 							{moment(currentMoment?.created_at).format('Do, MMM')}
 						</p>
 						<p className="text-secondary font-sans text-sm font-semibold">
@@ -180,7 +204,7 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 						</p>
 					</div>
 					<div className="z-30 flex gap-5 items-center">
-						<div
+						{/* <div
 							onTouchStart={(e) => {
 								e.stopPropagation();
 								handleUpdateFavoriteMoment();
@@ -196,7 +220,7 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 								fill={isFavorite}
 								className="text-primary"
 							/>
-						</div>
+						</div> */}
 						<div
 							onTouchStart={(e) => {
 								e.stopPropagation();
@@ -239,7 +263,29 @@ export const DetailMoment: React.FC<DetailMomentProps> = ({
 						/>
 					</div>
 				)}
-				<div className="w-full text-left text-primary-60 font-serif text-lg moments-md">
+				<div className="flex-col self-start mt-2">
+					<div className="flex items-center">
+						<BookmarkIcon
+							className="w-6 mr-3 text-primary"
+							fill="text-primary"
+						/>
+						<Caption type="1" className="text-primary">
+							{`Index's name`}
+						</Caption>
+					</div>
+					<div className="flex items-center mt-2">
+						<Icon
+							src="/images/icons/rocket.svg"
+							fill
+							withSVGStyles={false}
+							className="mr-3"
+						/>
+						<Caption type="1" className="text-primary">
+							{`Process' Name`}
+						</Caption>
+					</div>
+				</div>
+				<div className="w-full text-left text-primary font-serif text-lg moments-md mt-6">
 					<ReactMarkdown>
 						{editableContent || currentMoment?.content || ''}
 					</ReactMarkdown>

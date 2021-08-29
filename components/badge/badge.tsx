@@ -1,3 +1,4 @@
+import { Caption } from 'components/typography';
 import * as React from 'react';
 
 type BadgeProps = {
@@ -8,7 +9,7 @@ type BadgeProps = {
 export const Badge: React.FC<BadgeProps> = ({ onClick, text, children }) => {
 	return (
 		<span
-			className="absolute bottom-2 right-2 px-2.5 py-0.5 text-primary text-xs font-medium bg-background rounded-full cursor-pointer"
+			className="flex px-2 py-1 bg-secondary-light rounded-lg cursor-pointer"
 			onClick={(e) => {
 				e.stopPropagation();
 				onClick();
@@ -18,7 +19,13 @@ export const Badge: React.FC<BadgeProps> = ({ onClick, text, children }) => {
 				onClick();
 			}}
 		>
-			{text || children}
+			{text ? (
+				<Caption type="1" className="text-white">
+					{text}
+				</Caption>
+			) : (
+				children
+			)}
 		</span>
 	);
 };

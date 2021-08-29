@@ -95,26 +95,28 @@ const HomeIcon: React.FC<{
 	return (
 		<Link href={route === 'home' ? '/' : `/${route}`}>
 			<div className="z-20 cursor-pointer flex flex-col items-center relative">
-				<div className="absolute left-1 top-1">
+				<div className="relative">
+					<div className="absolute -left-3 top-[2px]">
+						<Icon
+							src="/images/icons/drops.svg"
+							className={clsx(
+								selectedRoute === 'home' ? 'text-secondary' : 'text-primary'
+							)}
+							width="8"
+						/>
+					</div>
 					<Icon
-						src="/images/icons/drops.svg"
+						src={`/images/icons/${icon}.svg`}
+						width="24"
+						height="24"
+						fill={icon === 'rocket'}
+						withSVGStyles={icon !== 'rocket'}
 						className={clsx(
-							selectedRoute === 'home' ? 'text-secondary' : 'text-primary'
+							{ 'text-secondary': route === selectedRoute },
+							{ 'text-primary': route !== selectedRoute }
 						)}
-						width="8"
 					/>
 				</div>
-				<Icon
-					src={`/images/icons/${icon}.svg`}
-					width="24"
-					height="24"
-					fill={icon === 'rocket'}
-					withSVGStyles={icon !== 'rocket'}
-					className={clsx(
-						{ 'text-secondary': route === selectedRoute },
-						{ 'text-primary': route !== selectedRoute }
-					)}
-				/>
 				<Caption
 					type="2"
 					className={clsx(

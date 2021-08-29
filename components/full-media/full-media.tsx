@@ -2,7 +2,7 @@ import * as React from 'react';
 import Image from 'next/image';
 import { Icon } from 'components/icon';
 import { useSwipeable } from 'react-swipeable';
-import { UploadIcon } from '@heroicons/react/outline';
+import { DownloadIcon } from '@heroicons/react/outline';
 import clsx from 'clsx';
 
 export const FullMedia: React.FC<{
@@ -82,7 +82,7 @@ export const FullMedia: React.FC<{
 						</div>
 					))}
 				</ul>
-				<UploadIcon width="24" className="cursor-pointer text-light" />
+				<DownloadIcon width="24" className="cursor-pointer text-light" />
 			</div>
 			<div
 				className="relative flex justify-center items-center w-full max-w-md h-full"

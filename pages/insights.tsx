@@ -43,11 +43,16 @@ const InsightsPage = () => {
 	}, [insights]);
 
 	const tags = React.useMemo(() => {
-		const value: string[] = [];
+		const value: { title: string; count: number }[] = [];
+		const included: string[] = [];
 		if (insights?.tags) {
 			insights.tags.forEach((elem) => {
-				if (!value.includes(elem.text)) {
-					value.push(elem.text);
+				if (!included.includes(elem.text)) {
+					value.push({
+						title: elem.text,
+						count: elem.tag_moments_aggregate.aggregate?.count || 0,
+					});
+					included.push(elem.text);
 				}
 			});
 		}

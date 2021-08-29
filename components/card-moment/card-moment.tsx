@@ -7,6 +7,7 @@ import { useCurrentMoment } from 'hooks';
 import { Icon } from 'components/icon';
 import { useRouter } from 'next/router';
 import { Moments } from 'types/schema-types';
+import { DuplicateIcon } from '@heroicons/react/solid';
 
 export const NoteVoice: React.FC<{ audio: string }> = ({ audio }) => (
 	<div className="flex items-center mb-2">
@@ -22,8 +23,19 @@ export const NoteVoice: React.FC<{ audio: string }> = ({ audio }) => (
 	</div>
 );
 
-export const NoteImage: React.FC<{ image: string }> = ({ image }) => (
+export const NoteImage: React.FC<{ image: string; moreThanOne: boolean }> = ({
+	image,
+	moreThanOne,
+}) => (
 	<div className="relative flex mb-2 w-full h-36 rounded-lg overflow-hidden">
+		{moreThanOne && (
+			<div
+				className="absolute top-2 left-2 z-10"
+				style={{ transform: 'matrix(-1, 0, 0, 1, 0, 0)' }}
+			>
+				<DuplicateIcon className="w-6 text-white" />
+			</div>
+		)}
 		<Image
 			src={image}
 			width={151}
@@ -34,12 +46,23 @@ export const NoteImage: React.FC<{ image: string }> = ({ image }) => (
 	</div>
 );
 
-export const NoteVideo: React.FC<{ video: string }> = ({ video }) => (
+export const NoteVideo: React.FC<{ video: string; moreThanOne: boolean }> = ({
+	video,
+	moreThanOne,
+}) => (
 	<div
 		className={clsx(
 			'relative flex mb-2 w-full h-36 bg-center bg-no-repeat rounded-lg overflow-hidden'
 		)}
 	>
+		{moreThanOne && (
+			<div
+				className="absolute top-2 left-2 z-10"
+				style={{ transform: 'matrix(-1, 0, 0, 1, 0, 0)' }}
+			>
+				<DuplicateIcon className="w-6 text-white" />
+			</div>
+		)}
 		<video
 			src={video}
 			autoPlay={false}
@@ -76,15 +99,23 @@ export const CardMoment: React.FC<Moments> = (cardMoment) => {
 		created_at,
 	} = cardMoment;
 
+	const mediaCount = React.useMemo(() => {
+		return (
+			(cardMoment.images?.length || 0) +
+			(cardMoment.videos?.length || 0) +
+			(cardMoment.note_voices?.length || 0)
+		);
+	}, [cardMoment]);
+
 	const selectMediaComponent = (): JSX.Element | null => {
 		// if (note_voices?.length) {
 		// 	return <NoteVoice audio={note_voices[0]} />;
 		// }
 
 		if (images?.length) {
-			return <NoteImage image={images[0]} />;
+			return <NoteImage image={images[0]} moreThanOne={mediaCount > 1} />;
 		} else if (videos?.length) {
-			return <NoteVideo video={videos[0]} />;
+			return <NoteVideo video={videos[0]} moreThanOne={mediaCount > 1} />;
 		}
 		return null;
 	};

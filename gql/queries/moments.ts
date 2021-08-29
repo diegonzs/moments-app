@@ -151,6 +151,13 @@ export const GET_INSIGHTS_MOMENTS = gql`
 			}
 		) {
 			text
+			tag_moments_aggregate(
+				where: { moment: { created_at: { _gt: $startDate, _lt: $endDate } } }
+			) {
+				aggregate {
+					count
+				}
+			}
 		}
 	}
 `;

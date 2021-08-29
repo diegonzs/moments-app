@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 interface InformationProps {
 	moments: number;
-	tags: string[];
+	tags: { title: string; count: number }[];
 }
 
 export const Information: React.FC<InformationProps> = ({ moments, tags }) => {
@@ -25,9 +25,9 @@ export const Information: React.FC<InformationProps> = ({ moments, tags }) => {
 				<div className="flex flex-col">
 					<Caption type="3" className="mb-2 text-primary-40">
 						<Trans>
-							Most used type
+							Most recurrent
 							<br />
-							of emotions
+							mood
 						</Trans>
 					</Caption>
 					<Subtitle type="1">😏</Subtitle>
@@ -38,15 +38,26 @@ export const Information: React.FC<InformationProps> = ({ moments, tags }) => {
 					<Trans>Most used hashtags</Trans>
 				</Subtitle>
 				<ul className="grid gap-3">
-					{tags.slice(0, 5).map((elem, index) => (
-						<Link href={`/memories/hashtags/${elem}`} key={elem}>
-							<li className="cursor-pointer">
-								<Subtitle type="1" className="text-primary">
-									{index + 1}. #{elem}
-								</Subtitle>
+					{tags
+						.sort((a, b) => a.count + b.count)
+						.slice(0, 5)
+						.map((elem, index) => (
+							<li
+								className="flex justify-between items-center"
+								key={elem.title}
+							>
+								<Link href={`/memories/hashtags/${elem}`}>
+									<Subtitle type="1" className="text-primary cursor-pointer">
+										{index + 1}. #{elem.title}
+									</Subtitle>
+								</Link>
+								<Link href={`/memories/hashtags/${elem}`} key={elem.title}>
+									<Subtitle type="3" className="text-primary cursor-pointer">
+										{elem.count} <Trans>moments</Trans>
+									</Subtitle>
+								</Link>
 							</li>
-						</Link>
-					))}
+						))}
 				</ul>
 			</div>
 		</div>

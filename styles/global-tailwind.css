@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+Pro&display=swap');
 * {
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	user-select: none;
 }
 :root {
 	--color-background: #fff7ed;
@@ -97,6 +98,7 @@
 @layer utilities {
 	.moments-md li {
 		list-style-type: disc;
+		user-select: text !important;
 	}
 	.moments-md strong {
 		font-weight: bold;
@@ -109,7 +111,7 @@
 		margin-bottom: 2px;
 	}
 	.moments-md p {
-		margin-bottom: 2px;
+		margin-bottom: 16px;
 	}
 	.hide-scroll-bar::-webkit-scrollbar {
 		display: none;
